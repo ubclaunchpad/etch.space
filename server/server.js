@@ -21,8 +21,8 @@
     var boardState = {};
 
     app.set('view engine', 'ejs');  
-    app.set('views', '../public');
-    app.use(express.static('../public'))
+    app.set('views', 'public');
+    app.use(express.static('public'))
 
     app.get('/', function(req, res) {  
         res.render('index', { boardState })
