@@ -3,6 +3,8 @@
         var canvas = document.getElementById('sketch');
         var ctx = canvas.getContext('2d');
 
+        drawInitialBoard();
+
         console.log('attempting connection');
         var socket = io();
     
@@ -36,5 +38,16 @@
             ctx.fillStyle = 'rgba(0,0,0,255)';
             ctx.fillRect( x, y, 1, 1 );
         }
+
+        function drawInitialBoard() {
+
+            Object.keys(INITIAL_BOARD).forEach(x => {
+                Object.keys(INITIAL_BOARD[x]).forEach(y => {
+                    drawPixel(x, y);
+                })
+            })
+
+        }
+
     }
 })()

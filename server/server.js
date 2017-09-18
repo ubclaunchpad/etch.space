@@ -4,6 +4,10 @@
     var http = require('http').Server(app);
     var io = require('socket.io')(http);
 
+    const BOARD_HEIGHT = 400;
+    const BOARD_WIDTH = 700;
+    const DRAW_RATE = 100;
+
     var votes = {
         horizontal: 0,
         vertical: 0
@@ -14,9 +18,17 @@
         y: 0
     }
 
-    app.use(express.static('public'))
+    var boardState = {};
 
-    setInterval(flushVotes, 100);
+    app.set('view engine', 'ejs');  
+    app.set('views', '../public');
+    app.use(express.static('../public'))
+
+    app.get('/', function(req, res) {  
+        res.render('index', { boardState })
+    });
+
+    setInterval(flushVotes, DRAW_RATE);
 
     io.on('connection', function(socket){
         console.log('a user connected');
@@ -58,7 +70,18 @@
         cursorPos.y += final.vertical;
 
         console.log(cursorPos);
+
+        updateBoardState(cursorPos.x, cursorPos.y);
+
         io.emit('canvaschange', cursorPos);
+    }
+
+    function updateBoardState(x, y) {
+        if (!boardState[x]) {
+            boardState[x] = {};
+        }
+
+        boardState[x][y] = true;
     }
 
     function mostPopular(votes) {
