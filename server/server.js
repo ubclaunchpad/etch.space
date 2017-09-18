@@ -32,7 +32,6 @@
 
     io.on('connection', function(socket){
         console.log('a user connected');
-        socket.emit('msg', Math.random());
         socket.on('disconnect', function(){
             console.log('user disconnected');
         });
