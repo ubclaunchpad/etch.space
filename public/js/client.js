@@ -21,22 +21,22 @@
             e = e || window.event;
             
             if (e.keyCode == '38') {
-                socket.emit('vote', {horizontal: 0, vertical: -1});
+                socket.emit('vote', {x: 0, y: -1});
             }
             else if (e.keyCode == '40') {
-                socket.emit('vote', {horizontal: 0, vertical: 1});
+                socket.emit('vote', {x: 0, y: 1});
             }
             else if (e.keyCode == '37') {
-                socket.emit('vote', {horizontal: -1, vertical: 0});
+                socket.emit('vote', {x: -1, y: 0});
             }
             else if (e.keyCode == '39') {
-                socket.emit('vote', {horizontal: 1, vertical: 0});
+                socket.emit('vote', {x: 1, y: 0});
             }
         }
 
         function drawPixel(x, y) {
             ctx.fillStyle = 'rgba(0,0,0,255)';
-            ctx.fillRect( x, y, 1, 1 );
+            ctx.fillRect( x, y, 3, 3 );
         }
 
         function drawInitialBoard() {

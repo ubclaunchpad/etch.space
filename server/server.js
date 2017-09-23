@@ -10,14 +10,18 @@
     const BOARD_WIDTH = 700;
     const DRAW_RATE = 100;
 
-    var votes = {
-        horizontal: 0,
-        vertical: 0
-    };
-
-    var cursorPos = {
+    const votes = {
         x: 0,
         y: 0
+    };
+
+    const cursorPos = {
+        x: 0,
+        y: 0
+    }
+
+    // map of connected users (keys are the socket ids)
+    const users = {
     }
 
     var boardState = {};
@@ -32,49 +36,78 @@
 
     setInterval(flushVotes, DRAW_RATE);
 
-    io.on('connection', function(socket){
+    io.on('connection', function (socket) {
+       
+        const id = socket.id;
+
+        createUser(id);
+
         console.log('a user connected');
-        socket.on('disconnect', function(){
+        socket.on('disconnect', function () {
+            deleteUser(id);
             console.log('user disconnected');
         });
 
-        socket.on('vote', addVote);
+        socket.on('vote', (vote) => updateUserVote(id, vote));
     });
 
     http.listen(PORT, function(){
         console.log(`listening on *:${PORT}`);
     });
 
-    function addVote(vote){
-        if(vote.horizontal < 0) {
-            votes.horizontal--;
-        }
-        else if(vote.horizontal > 0) {
-            votes.horizontal++;
-        }
-        else if(vote.vertical > 0) {
-            votes.vertical++;
-        }
-        else if(vote.vertical < 0) {
-            votes.vertical--;
-        }
+    function updateUserVote(id, vote) {
+        console.log("VOTE FROM: ", id);
+        users[id].vote = vote;
+    }
 
-        console.log(votes);
+    function clearUserVotes() {
+
+        votes.x = 0;
+        votes.y = 0;
+
+        Object.values(users).forEach(user => {
+
+            votes.x += user.vote.x;
+            votes.y += user.vote.y;
+            user.vote.x = 0;
+            user.vote.y = 0;
+
+        })
+
     }
 
     function flushVotes() {
+        clearUserVotes();
+        console.log(votes);
         var final = mostPopular(votes);
 
-        console.log(final);
+        //console.log(final);
 
-        cursorPos.x += final.horizontal;
-        cursorPos.y += final.vertical;
+        if (cursorPos.x < BOARD_WIDTH) {
+            cursorPos.x = cursorPos.x >= 0 ? cursorPos.x + final.x * 3 : 0;
+        }
+        if (cursorPos.y < BOARD_WIDTH) {
+            cursorPos.y = cursorPos.y >= 0 ? cursorPos.y + final.y * 3 : 0;
+        }
 
-        console.log(cursorPos);
+        //console.log(cursorPos);
 
         updateBoardState(cursorPos.x, cursorPos.y);
 
         io.emit('canvaschange', cursorPos);
+    }
+
+    function createUser(id) {
+        users[id] = {
+            vote: {
+                x: 0,
+                y: 0
+            }
+        }
+    }
+
+    function deleteUser(id) {
+        delete users[id];
     }
 
     function updateBoardState(x, y) {
@@ -86,27 +119,27 @@
     }
 
     function mostPopular(votes) {
-        if(votes.horizontal != 0) {
-            votes.horizontal = votes.horizontal / Math.abs(votes.horizontal);
+        if(votes.x != 0) {
+            votes.x = votes.x / Math.abs(votes.x);
         }
-        if(votes.vertical != 0) {
-            votes.vertical = votes.vertical / Math.abs(votes.vertical);
+        if(votes.y != 0) {
+            votes.y = votes.y / Math.abs(votes.y);
         }
 
-        if(Math.abs(votes.horizontal) > Math.abs(votes.vertical)) {
-            votes.vertical = 0;
+        if(Math.abs(votes.x) > Math.abs(votes.y)) {
+            votes.y = 0;
         }
         else {
-            votes.horizontal = 0;
+            votes.x = 0;
         }
 
         var final = {
-            horizontal: votes.horizontal,
-            vertical: votes.vertical
+            x: votes.x,
+            y: votes.y
         }
 
-        votes.horizontal = 0;
-        votes.vertical = 0;
+        votes.x = 0;
+        votes.y = 0;
 
         return final;
     }
