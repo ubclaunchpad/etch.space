@@ -2,6 +2,9 @@
   "name": "etch.serve",
   "version": "0.0.1",
   "description": "etch.io server",
+  "scripts": {
+    "start": "node server/server.js"
+  },
   "dependencies": {
     "ejs": "^2.5.7",
     "express": "^4.15.4",

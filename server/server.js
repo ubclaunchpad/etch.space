@@ -4,6 +4,8 @@
     var http = require('http').Server(app);
     var io = require('socket.io')(http);
 
+    const PORT = 3000;
+
     const BOARD_HEIGHT = 400;
     const BOARD_WIDTH = 700;
     const DRAW_RATE = 100;
@@ -39,8 +41,8 @@
         socket.on('vote', addVote);
     });
 
-    http.listen(3000, function(){
-        console.log('listening on *:3000');
+    http.listen(PORT, function(){
+        console.log(`listening on *:${PORT}`);
     });
 
     function addVote(vote){

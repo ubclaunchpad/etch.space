@@ -2,6 +2,7 @@
 body {
     height: 100%;
     overflow: hidden;
+    background: #363636;
 }
 
 * {
@@ -9,19 +10,18 @@ body {
 }
 #housing {
     margin: 0 auto;
-    width: 1000px;
-    height: 700px;
+    width: 900px;
+    height: 600px;
     background-color: #991122;
     -webkit-border-radius: 50px;
     border-radius: 50px;
     border: 30px solid #AA293C;
-    box-shadow: 1px 1px 100px #111111;
     position: relative;
 }
 
 .knob {
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     background-color: #eeeeee;
     border-radius: 100%;
     border: 20px solid #ffffff;
@@ -34,7 +34,7 @@ body {
     margin: 0 auto;
     position: relative;
     text-align: center;
-    margin-top: 100px;
+    margin-top: 12px;
     width: 100%;
     height: 100%;
 }
