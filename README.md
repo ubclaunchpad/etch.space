@@ -2,7 +2,7 @@
 
 # etch.io
 A live multi-user collaborative etch-a-sketch built on websockets.
-
+![Alt text](/logo.png?raw=true "etch")
 ## features
 - one etch a sketch board shared by everyone currently on the website
 - users give input on how to move the cursor
