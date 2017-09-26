@@ -3,8 +3,9 @@ module.exports = {
         PORT: 3000
     },
     GAME: {
-        UPDATE_RATE: 100,
+        UPDATE_RATE: 50,
         BOARD_HEIGHT: 400,
-        BOARD_WIDTH: 700
+        BOARD_WIDTH: 700,
+        PIXEL_SIZE: 3
     }
 }

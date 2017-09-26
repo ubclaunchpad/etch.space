@@ -1,53 +1,68 @@
-(function () {
-    window.onload = function () {
-        var canvas = document.getElementById('sketch');
-        var ctx = canvas.getContext('2d');
+window.onload = function () {
 
-        drawInitialBoard();
+    const PIXEL_SIZE = 3;
+    const BOARD_WIDTH = 700;
+    const BOARD_HEIGHT = 400;
+    const BOARD_BG_COLOR = '#ffffff';
 
-        console.log('attempting connection');
-        var socket = io();
-    
-        socket.on('msg', function(msg) {
-            console.log(msg);
-        });
+    var canvas = document.getElementById('sketch');
+    var ctx = canvas.getContext('2d');
 
-        socket.on('canvaschange', function (c) {
-            drawPixel(c.x, c.y);
-        });
+    drawInitialBoard();
 
-        document.onkeydown = function(e) {
-            console.log('down');
-            e = e || window.event;
-            
-            if (e.keyCode == '38') {
-                socket.emit('vote', {x: 0, y: -1});
-            }
-            else if (e.keyCode == '40') {
-                socket.emit('vote', {x: 0, y: 1});
-            }
-            else if (e.keyCode == '37') {
-                socket.emit('vote', {x: -1, y: 0});
-            }
-            else if (e.keyCode == '39') {
-                socket.emit('vote', {x: 1, y: 0});
-            }
+    console.log('attempting connection');
+    var socket = io();
+
+    socket.on('msg', function(msg) {
+        console.log(msg);
+    });
+
+    socket.on('tick', function (diffs) {
+        diffs.forEach(diff => {
+            drawPixel(diff.x, diff.y, diff.color);
+        })
+
+    });
+
+    // socket.on('canvasclear', function () {
+    //     for (let x = 0; x <= BOARD_WIDTH; x++) {
+    //         for (let y = 0; y <= BOARD_HEIGHT; y++) {
+    //             drawPixel(x, y, BOARD_BG_COLOR);
+    //         }
+    //     }
+    // })
+
+    document.onkeydown = function(e) {
+        console.log('down');
+        e = e || window.event;
+        
+        if (e.keyCode == '38') {
+            socket.emit('move', {x: 0, y: -1});
         }
-
-        function drawPixel(x, y) {
-            ctx.fillStyle = 'rgba(0,0,0,255)';
-            ctx.fillRect( x, y, 3, 3 );
+        else if (e.keyCode == '40') {
+            socket.emit('move', {x: 0, y: 1});
         }
+        else if (e.keyCode == '37') {
+            socket.emit('move', {x: -1, y: 0});
+        }
+        else if (e.keyCode == '39') {
+            socket.emit('move', {x: 1, y: 0});
+        }
+    }
 
-        function drawInitialBoard() {
+    function drawPixel(x, y, color) {
+        ctx.fillStyle = color;
+        ctx.fillRect( x, y, 3, 3 );
+    }
 
-            Object.keys(INITIAL_BOARD).forEach(x => {
-                Object.keys(INITIAL_BOARD[x]).forEach(y => {
-                    drawPixel(x, y);
-                })
+    function drawInitialBoard() {
+
+        Object.keys(INITIAL_BOARD).forEach(x => {
+            Object.keys(INITIAL_BOARD[x]).forEach(y => {
+                drawPixel(x, y, INITIAL_BOARD[x][y]);
             })
-
-        }
+        })
 
     }
-})()
+
+}

@@ -7,24 +7,17 @@ class Session {
 
         this.io = socketIO(server);
 
-        this.votes = {
-            x: 0,
-            y: 0
-        }
-
-        this.cursorPos = {
-            x: 0,
-            y: 0
-        }
-
         this.users = {};
+
+        // map of x-y coordinates, values are the color of the cell
         this.boardState = {};
 
         this.io.on('connection', this.bindSocketEvents.bind(this))
     }
 
     start() {
-        setInterval(this.flushVotes.bind(this), config.GAME.UPDATE_RATE);
+        this.io.emit('canvasclear');
+        setInterval(this.tick.bind(this), config.GAME.UPDATE_RATE);
     }
 
     bindSocketEvents(socket) {
@@ -35,54 +28,85 @@ class Session {
 
         console.log('a user connected');
         socket.on('disconnect', this.deleteUser.bind(this, id))
-        socket.on('vote', this.updateUserVote.bind(this, id));
+        socket.on('move', this.handleUserMove.bind(this, id));
 
     }
     
-    updateUserVote(id, vote) {
-        console.log("VOTE FROM: ", id);
-        this.users[id].vote = vote;
+    handleUserMove(id, move) {
+        const user = this.users[id];
+        console.log("MOVE FROM: ", id);
+
+        if (Math.abs(move.x) === 0 || Math.abs(move.x) === 1) {
+            user.nextPos.x = user.pos.x + (move.x * config.GAME.PIXEL_SIZE);
+        }
+
+        if (Math.abs(move.y) === 0 || Math.abs(move.y) === 1) {
+            user.nextPos.y = user.pos.y + (move.y * config.GAME.PIXEL_SIZE);
+        }
+
     }
 
-    clearUserVotes() {
+    tick() {
 
-        this.votes.x = 0;
-        this.votes.y = 0;
+        const diffs = [];
 
         Object.values(this.users).forEach(user => {
+            console.log(user);
+            if ((user.nextPos.x !== user.pos.x) ||
+                (user.nextPos.y !== user.pos.y)) {
+                
+                diffs.push({
+                    x: user.nextPos.x,
+                    y: user.nextPos.y,
+                    color: user.color
+                })
 
-            this.votes.x += user.vote.x;
-            this.votes.y += user.vote.y;
-            user.vote.x = 0;
-            user.vote.y = 0;
+                user.pos.x = user.nextPos.x;
+                user.pos.y = user.nextPos.y;
 
+            }
+        })
+
+        this.updateBoardState(diffs);
+
+        this.io.emit('tick', diffs);
+    }
+
+    createUser(id) {
+
+        const startingPos = this.getRandomPos();
+        const color = this.getRandomColor();
+
+        console.log(startingPos);
+        this.users[id] = {
+            color,
+            pos: startingPos,
+            nextPos: {
+                x: startingPos.x,
+                y: startingPos.y
+            }
+        }
+
+        this.updatePixel({
+            x: startingPos.x,
+            y: startingPos.y,
+            color
         })
 
     }
 
-    flushVotes() {
-        this.clearUserVotes();
-        const final = this.getMostPopular();
+    getRandomColor() {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
 
-        if (this.cursorPos.x < config.GAME.BOARD_WIDTH) {
-            this.cursorPos.x = this.cursorPos.x >= 0 ? this.cursorPos.x + final.x * 3 : 0;
-        }
-
-        if (this.cursorPos.y < config.GAME.BOARD_WIDTH) {
-            this.cursorPos.y = this.cursorPos.y >= 0 ? this.cursorPos.y + final.y * 3 : 0;
-        }
-
-        this.updateBoardState(this.cursorPos.x, this.cursorPos.y);
-
-        this.io.emit('canvaschange', this.cursorPos);
+        return `rgb(${r}, ${g}, ${b})`;
     }
 
-    createUser(id) {
-        this.users[id] = {
-            vote: {
-                x: 0,
-                y: 0
-            }
+    getRandomPos() {
+        return {
+            x: parseInt(Math.random() * (config.GAME.BOARD_WIDTH - config.GAME.PIXEL_SIZE)),
+            y: parseInt(Math.random() * (config.GAME.BOARD_HEIGHT - config.GAME.PIXEL_SIZE))
         }
     }
 
@@ -90,39 +114,17 @@ class Session {
         delete this.users[id];
     }
 
-    updateBoardState(x, y) {
-        if (!this.boardState[x]) {
-            this.boardState[x] = {};
+    updatePixel(item) {
+        if (!this.boardState[item.x]) {
+            this.boardState[item.x] = {};
         }
 
-        this.boardState[x][y] = true;
+        this.boardState[item.x][item.y] = item.color;
     }
 
-    getMostPopular() {
-
-        if(this.votes.x != 0) {
-            this.votes.x = this.votes.x / Math.abs(this.votes.x);
-        }
-
-        if(this.votes.y != 0) {
-            this.votes.y = this.votes.y / Math.abs(this.votes.y);
-        }
-
-        if(Math.abs(this.votes.x) > Math.abs(this.votes.y)) {
-            this.votes.y = 0;
-        }
-
-        else {
-            this.votes.x = 0;
-        }
-
-        const final = {
-            x: this.votes.x,
-            y: this.votes.y
-        }
-
-        return this.votes;
-    }
+    updateBoardState(diffs) {
+        diffs.forEach(diff => this.updatePixel(diff))
+   }
 }
 
 module.exports = Session;
