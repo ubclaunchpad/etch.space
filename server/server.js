@@ -1,146 +1,20 @@
-(function () {
-    var express = require('express');
-    var app = express();
-    var http = require('http').Server(app);
-    var io = require('socket.io')(http);
-
-    const PORT = 3000;
-
-    const BOARD_HEIGHT = 400;
-    const BOARD_WIDTH = 700;
-    const DRAW_RATE = 100;
-
-    const votes = {
-        x: 0,
-        y: 0
-    };
-
-    const cursorPos = {
-        x: 0,
-        y: 0
-    }
-
-    // map of connected users (keys are the socket ids)
-    const users = {
-    }
-
-    var boardState = {};
+    const express = require('express');
+    const app = express();
+    const server = require('http').Server(app);
+    const config = require('./config');
+    const Session = require('./session');
 
     app.set('view engine', 'ejs');  
     app.set('views', 'public');
     app.use(express.static('public'))
 
+    const session = new Session(server);
+    session.start();
+
     app.get('/', function(req, res) {  
-        res.render('index', { boardState })
+        res.render('index', { boardState: session.boardState })
     });
 
-    setInterval(flushVotes, DRAW_RATE);
-
-    io.on('connection', function (socket) {
-       
-        const id = socket.id;
-
-        createUser(id);
-
-        console.log('a user connected');
-        socket.on('disconnect', function () {
-            deleteUser(id);
-            console.log('user disconnected');
-        });
-
-        socket.on('vote', (vote) => updateUserVote(id, vote));
+    server.listen(config.SERVER.PORT, function(){
+        console.log(`listening on *:${config.SERVER.PORT}`);
     });
-
-    http.listen(PORT, function(){
-        console.log(`listening on *:${PORT}`);
-    });
-
-    function updateUserVote(id, vote) {
-        console.log("VOTE FROM: ", id);
-        users[id].vote = vote;
-    }
-
-    function clearUserVotes() {
-
-        votes.x = 0;
-        votes.y = 0;
-
-        Object.values(users).forEach(user => {
-
-            votes.x += user.vote.x;
-            votes.y += user.vote.y;
-            user.vote.x = 0;
-            user.vote.y = 0;
-
-        })
-
-    }
-
-    function flushVotes() {
-        clearUserVotes();
-        console.log(votes);
-        var final = mostPopular(votes);
-
-        //console.log(final);
-
-        if (cursorPos.x < BOARD_WIDTH) {
-            cursorPos.x = cursorPos.x >= 0 ? cursorPos.x + final.x * 3 : 0;
-        }
-        if (cursorPos.y < BOARD_WIDTH) {
-            cursorPos.y = cursorPos.y >= 0 ? cursorPos.y + final.y * 3 : 0;
-        }
-
-        //console.log(cursorPos);
-
-        updateBoardState(cursorPos.x, cursorPos.y);
-
-        io.emit('canvaschange', cursorPos);
-    }
-
-    function createUser(id) {
-        users[id] = {
-            vote: {
-                x: 0,
-                y: 0
-            }
-        }
-    }
-
-    function deleteUser(id) {
-        delete users[id];
-    }
-
-    function updateBoardState(x, y) {
-        if (!boardState[x]) {
-            boardState[x] = {};
-        }
-
-        boardState[x][y] = true;
-    }
-
-    function mostPopular(votes) {
-        if(votes.x != 0) {
-            votes.x = votes.x / Math.abs(votes.x);
-        }
-        if(votes.y != 0) {
-            votes.y = votes.y / Math.abs(votes.y);
-        }
-
-        if(Math.abs(votes.x) > Math.abs(votes.y)) {
-            votes.y = 0;
-        }
-        else {
-            votes.x = 0;
-        }
-
-        var final = {
-            x: votes.x,
-            y: votes.y
-        }
-
-        votes.x = 0;
-        votes.y = 0;
-
-        return final;
-    }
-})();

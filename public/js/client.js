@@ -12,7 +12,7 @@
             console.log(msg);
         });
 
-        socket.on('canvaschange', function(c) {
+        socket.on('canvaschange', function (c) {
             drawPixel(c.x, c.y);
         });
 

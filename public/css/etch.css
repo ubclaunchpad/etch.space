@@ -25,7 +25,6 @@ body {
     background-color: #eeeeee;
     border-radius: 100%;
     border: 20px solid #ffffff;
-    box-shadow: 1px 1px 30px #222222;
     position: absolute;
     bottom: -60px;
 }
