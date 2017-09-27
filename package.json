@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "etch.io server",
   "scripts": {
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "build": "webpack"
   },
   "dependencies": {
     "ejs": "^2.5.7",

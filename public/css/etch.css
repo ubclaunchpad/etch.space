@@ -1,35 +1,72 @@
 
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
 body {
     height: 100%;
     overflow: hidden;
     background: #363636;
+    color: #cbcbcb;
+    font-family: Helvetica, sans-serif;
+    display: flex;
+    flex-flow: column;
+    margin: 0;
 }
 
-* {
-    box-sizing: border-box;
+#app {
+    flex: 1;
+    display: flex;
+    flex-flow: column;
 }
-#housing {
-    margin: 0 auto;
-    width: 900px;
-    height: 500px;
+
+.page {
+    display: flex;
+    flex: 1;
+    flex-flow: row;
+    padding: 20px;
+}
+
+.users-box {
+    flex: 1;
+    border: 5px solid #3f3f3f;
+    background: #282828;
+    max-width: 300px;
+}
+
+.users-box-header {
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+    border-bottom: 5px #3f3f3f solid;
+}
+
+.users-list {
+    padding: 10px;
+}
+
+.housing {
+    margin-left: 50px;
+    margin-right: 20px;
     background-color: #991122;
-    -webkit-border-radius: 50px;
-    border-radius: 50px;
+    border-radius: 10px;
     border: 30px solid #AA293C;
     position: relative;
+    flex: 1;
 }
 
 .knob {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     background-color: #eeeeee;
     border-radius: 100%;
     border: 20px solid #ffffff;
     position: absolute;
-    bottom: -60px;
+    bottom: -40px;
 }
 
-#wrapper {
+.wrapper {
     margin: 0 auto;
     position: relative;
     text-align: center;
@@ -38,10 +75,9 @@ body {
     height: 100%;
 }
 
-#sketch {
+.sketch {
     margin: 0 auto;
     position: relative;
-    background-color: white;
     border: 8px solid #7C0D1C;
     border-radius: 5px;
 }

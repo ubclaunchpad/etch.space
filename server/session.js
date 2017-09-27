@@ -1,4 +1,4 @@
-const config = require('./config');
+const config = require('../config');
 const socketIO = require('socket.io');
 
 class Session {
@@ -18,6 +18,7 @@ class Session {
     start() {
         this.io.emit('canvasclear');
         setInterval(this.tick.bind(this), config.GAME.UPDATE_RATE);
+        setInterval(this.usersUpdate.bind(this), config.GAME.USERS_UPDATE_RATE);
     }
 
     bindSocketEvents(socket) {
@@ -44,6 +45,10 @@ class Session {
             user.nextPos.y = user.pos.y + (move.y * config.GAME.PIXEL_SIZE);
         }
 
+    }
+
+    usersUpdate() {
+        this.io.emit('users update', this.users); 
     }
 
     tick() {
