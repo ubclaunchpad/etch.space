@@ -700,6 +700,7 @@ module.exports = {
         USERS_UPDATE_RATE: 1000,
         BOARD_HEIGHT: 450,
         BOARD_WIDTH: 700,
+        BOARD_BEZEL_THICKNESS: 50,
         BOARD_BG_COLOR: '#eaeaea',
         PIXEL_SIZE: 3
     }
@@ -1228,7 +1229,13 @@ var Board = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'housing' },
+                {
+                    className: 'housing',
+                    style: {
+                        width: _config2.default.GAME.BOARD_BEZEL_THICKNESS * 2 + _config2.default.GAME.BOARD_WIDTH,
+                        height: _config2.default.GAME.BOARD_BEZEL_THICKNESS * 2 + _config2.default.GAME.BOARD_HEIGHT
+                    }
+                },
                 _react2.default.createElement(
                     'div',
                     { className: 'wrapper' },

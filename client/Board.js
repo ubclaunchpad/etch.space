@@ -72,7 +72,13 @@ class Board extends Component {
 
     render() {
         return (
-            <div className="housing">
+            <div
+                className="housing"
+                style={{
+                    width: config.GAME.BOARD_BEZEL_THICKNESS * 2 + config.GAME.BOARD_WIDTH,
+                    height: config.GAME.BOARD_BEZEL_THICKNESS * 2 + config.GAME.BOARD_HEIGHT
+                }}
+            >
             <div className="wrapper">
                     <canvas
                         className="sketch"    

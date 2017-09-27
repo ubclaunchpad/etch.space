@@ -95,9 +95,8 @@ body {
 
 .housing {
     background-color: #CF4647;
-    border-radius: 5px;
+    border-radius: 15px;
     position: relative;
-    flex: 1;
     margin: 85px;
     margin-top: 20px;
 }
