@@ -97,8 +97,7 @@ body {
     background-color: #CF4647;
     border-radius: 15px;
     position: relative;
-    margin: 85px;
-    margin-top: 20px;
+    margin: 20px 85px;
 }
 
 .knob {

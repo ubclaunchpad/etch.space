@@ -35,6 +35,11 @@ class App extends Component {
                 <div className="page-center">
                     <div className="title">etch.io</div>
                     <Board />
+                    <div className="title"
+                        style={{
+                            fontSize: 20
+                        }}
+                    >move with arrow keys ←↑→↓</div>
                 </div>    
         </div>
         )
