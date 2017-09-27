@@ -1,9 +1,9 @@
 (function () {
     require('dotenv').config();
-    
+    const ENV = process.env.ENV || "development";    
     var express = require('express');
     var app = express();
-    var knexConfig = require('./knexfile');
+    var knexConfig = require('../knexfile');
     var knex = require('knex')(knexConfig[ENV]);
     var http = require('http').Server(app);
     var io = require('socket.io')(http);
@@ -76,7 +76,7 @@
             user.vote.x = 0;
             user.vote.y = 0;
 
-        })
+        });
 
     }
 
