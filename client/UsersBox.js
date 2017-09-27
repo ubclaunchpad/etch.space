@@ -21,9 +21,18 @@ class UsersBox extends Component {
                                 color: user.color
                             }}
                         >
-                            {id}
+                            {user.nick}
                         </div>)
                     })}
+                </div>    
+                <div className="users-chat-box">
+                <div>me:</div>
+                <input
+                    type="text"    
+                    className="users-chat-input"
+                    autoFocus    
+                >
+                    </input>
                 </div>    
             </div>
         )

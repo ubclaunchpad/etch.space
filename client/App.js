@@ -30,9 +30,12 @@ class App extends Component {
 
     render() {
         return (
-            <div className="page">
-                <UsersBox users={this.state.users}/>
-                <Board />
+        <div className="page">
+                <UsersBox users={this.state.users} />
+                <div className="page-center">
+                    <div className="title">etch.io</div>
+                    <Board />
+                </div>    
         </div>
         )
     }

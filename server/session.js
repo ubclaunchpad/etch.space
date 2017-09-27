@@ -39,10 +39,12 @@ class Session {
 
         if (Math.abs(move.x) === 0 || Math.abs(move.x) === 1) {
             user.nextPos.x = user.pos.x + (move.x * config.GAME.PIXEL_SIZE);
+            user.nextPos.x = Math.min(user.nextPos.x, config.GAME.BOARD_WIDTH);
         }
 
         if (Math.abs(move.y) === 0 || Math.abs(move.y) === 1) {
             user.nextPos.y = user.pos.y + (move.y * config.GAME.PIXEL_SIZE);
+            user.nextPos.y = Math.min(user.nextPos.y, config.GAME.BOARD_HEIGHT);
         }
 
     }
@@ -89,7 +91,8 @@ class Session {
             nextPos: {
                 x: startingPos.x,
                 y: startingPos.y
-            }
+            },
+            nick: 'anonymous'
         }
 
         this.updatePixel({
