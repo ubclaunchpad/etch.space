@@ -35,7 +35,7 @@ body {
     display: flex;
     flex-flow: column;
     flex: 1;
-    padding-top: 20px;
+    padding: 20px 0px; 
 }
 
 .title {
@@ -97,7 +97,7 @@ body {
     background-color: #CF4647;
     border-radius: 15px;
     position: relative;
-    margin: 20px 85px;
+    margin: auto;
 }
 
 .knob {
