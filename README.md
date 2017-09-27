@@ -13,4 +13,4 @@ A live multi-user collaborative etch-a-sketch built on websockets.
 - in vector mode, everyone's directions are summed and the cursor moves multiple pixels at a time
 
 ## Notes
-  - Have to upgrade to latest Node in order to user Object.values on serverside
+  - Have to upgrade to at least Node v7.0 in order to user Object.values on serverside since it is a new feature in ES2017
