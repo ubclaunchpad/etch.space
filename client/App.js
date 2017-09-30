@@ -12,7 +12,8 @@ class App extends Component {
         this.socket = io();
 
         this.state = {
-            users: {}
+            users: INITIAL_USERS,
+            chat: INITIAL_CHAT
         }
     }
 
@@ -22,16 +23,42 @@ class App extends Component {
 
     bindSocketEvents(socket) {
        socket.on('users update', this.handleUserUpdate.bind(this));
+       socket.on('event_batch', this.handleEventBatch.bind(this));
+    }
+
+    handleEventBatch(events) {
+
+        let chat = this.state.chat;
+
+        events.forEach(event => {
+
+            switch (event.type) {
+                case 'chat':
+                    chat.push(event);
+                default:
+                    break;    
+            }
+
+        })
+
+        this.setState({ chat });
+
     }
 
     handleUserUpdate(users) {
-        this.setState({ users });
+        this.setState({
+            users
+        });
     }
 
     render() {
         return (
         <div className="page">
-                <UsersBox users={this.state.users} socket={this.socket}/>
+                <UsersBox
+                    socket={this.socket}
+                    users={this.state.users}
+                    chat={this.state.chat}
+                />
                 <div className="page-center">
                     <div className="title">etch.io</div>
                     <Board socket={this.socket}/>

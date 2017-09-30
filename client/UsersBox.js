@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
 class UsersBox extends Component {
 
@@ -24,18 +25,23 @@ class UsersBox extends Component {
         }
     }
 
+    scrollChatToBottom(e) {
+        if (e) {
+            e.scrollTop = e.scrollHeight;
+        }
+    }
+
     render() {
 
-        const userIds = Object.keys(this.props.users); 
+        const users = Object.values(this.props.users).filter(user => user.connected);
 
         return (
             <div className="users-box">
                 <div className="users-box-header">
-                    {`${userIds.length} user(s) online`}
+                    {`${users.length} user(s) online`}
                 </div>
                 <div className="users-list">
-                {userIds.map((id, i) => {
-                    const user = this.props.users[id];
+                {users.map((user, i) => {
                     return (
                         <div
                             key={i}
@@ -46,7 +52,27 @@ class UsersBox extends Component {
                             {user.nick}
                         </div>)
                     })}
+  
                 </div>    
+                <div
+                    className="chat"
+                    ref={this.scrollChatToBottom}
+                >
+                        {this.props.chat.map(event => {
+                        return (
+                            <p className="chat-message">
+                                <span className="chat-stamp">{moment.unix(event.stamp).format('h:mm')}</span>
+                                <span
+                                    className="chat-nick"
+                                    style={{color: this.props.users[event.id].color}}
+                                >
+                                    {this.props.users[event.id].nick + ': '}
+                                </span>
+                                {event.content}
+                            </p>
+                        ) 
+                })}
+                </div>  
                 <div className="users-chat-box">
                 <div>me:</div>
                 <input

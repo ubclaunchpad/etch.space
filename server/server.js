@@ -12,7 +12,11 @@
     session.start();
 
     app.get('/', function(req, res) {  
-        res.render('index', { boardState: session.boardState })
+        res.render('index', {
+            boardState: session.boardState,
+            chat: session.chat,
+            users: session.users
+        })
     });
 
     server.listen(config.SERVER.PORT, function(){

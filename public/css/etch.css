@@ -134,3 +134,18 @@ body {
 #right {
     right: -30px;
 }
+
+.chat {
+    width: 100%;
+    padding: 15px;
+    overflow-y: scroll;
+}
+
+.chat-message {
+    word-break: break-all;
+    margin: 0;
+}
+
+.chat-nick {
+    margin-left: 5px;
+}

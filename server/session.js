@@ -1,5 +1,6 @@
 const config = require('../config');
 const socketIO = require('socket.io');
+const moment = require('moment');
 
 class Session {
 
@@ -35,7 +36,7 @@ class Session {
         console.log('a user connected');
         socket.on('disconnect', this.deleteUser.bind(this, id))
         socket.on('move', this.handleUserMove.bind(this, id));
-        socket.on('chat', this.handleChat.bind(this, id));
+        socket.on('chat', this.handleChatEvent.bind(this, id));
 
     }
 
@@ -44,21 +45,34 @@ class Session {
     processEvents() {
 
         if (this.events.length) {
-            while (this.events.length) {
-                const event = this.events.shift();
 
-                
+            console.log(this.events);
 
-            }
+            this.events.forEach((event) => {
+                switch (event.type) {
+                    case 'chat':
+                        this.chat.push(event);
+                        break;
+                    default:
+                        break;    
+                }
+            })
+
+            this.io.emit('event_batch', this.events);
+            this.events = [];
         }
 
     }
 
-    handleChat(id, msg) {
+    handleChatEvent(id, content) {
+
+        const stamp = new moment().unix();
+
         this.events.push({
             type: 'chat',
             id,
-            msg
+            content,
+            stamp
         })
     }
     
@@ -118,7 +132,8 @@ class Session {
                 x: startingPos.x,
                 y: startingPos.y
             },
-            nick: 'anonymous'
+            nick: 'anonymous',
+            connected: true
         }
 
         this.updatePixel({
@@ -145,7 +160,7 @@ class Session {
     }
 
     deleteUser(id) {
-        delete this.users[id];
+        this.users[id].connected = false;
     }
 
     updatePixel(item) {
