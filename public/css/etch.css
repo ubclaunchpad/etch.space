@@ -138,7 +138,6 @@ body {
 .chat {
     width: 100%;
     padding: 15px;
-    overflow-y: scroll;
 }
 
 .chat-message {

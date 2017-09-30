@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 class UsersBox extends Component {
 
@@ -25,9 +26,10 @@ class UsersBox extends Component {
         }
     }
 
-    scrollChatToBottom(e) {
+    getScrollbarRef(e) {
         if (e) {
-            e.scrollTop = e.scrollHeight;
+            this.scrollbar = e;
+            e.scrollToBottom();
         }
     }
 
@@ -54,6 +56,7 @@ class UsersBox extends Component {
                     })}
   
                 </div>    
+                <Scrollbars ref={this.getScrollbarRef.bind(this)}>
                 <div
                     className="chat"
                     ref={this.scrollChatToBottom}
@@ -73,6 +76,7 @@ class UsersBox extends Component {
                         ) 
                 })}
                 </div>  
+                </Scrollbars>    
                 <div className="users-chat-box">
                 <div>me:</div>
                 <input
