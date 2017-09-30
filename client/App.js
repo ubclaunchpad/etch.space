@@ -8,20 +8,20 @@ class App extends Component {
     constructor(props) {
         super(props);
 
+        console.log('attempting connection');
+        this.socket = io();
+
         this.state = {
             users: {}
         }
     }
 
     componentDidMount() {
-        console.log('attempting connection');
-        const socket = io();
-
-        this.bindSocketEvents(socket);
+        this.bindSocketEvents(this.socket);
     }
 
     bindSocketEvents(socket) {
-        socket.on('users update', this.handleUserUpdate.bind(this));
+       socket.on('users update', this.handleUserUpdate.bind(this));
     }
 
     handleUserUpdate(users) {
@@ -31,10 +31,10 @@ class App extends Component {
     render() {
         return (
         <div className="page">
-                <UsersBox users={this.state.users} />
+                <UsersBox users={this.state.users} socket={this.socket}/>
                 <div className="page-center">
                     <div className="title">etch.io</div>
-                    <Board />
+                    <Board socket={this.socket}/>
                     <div className="title"
                         style={{
                             fontSize: 20

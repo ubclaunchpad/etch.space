@@ -2,6 +2,28 @@ import React, { Component } from 'react';
 
 class UsersBox extends Component {
 
+    componentDidMount() {
+    }
+
+    bindInputEvents(e) {
+
+        // store reference to input element
+        if (e) {
+            this.textInput = e;
+            e.addEventListener('keydown', this.handleEnterEvent.bind(this));
+        }
+
+    }
+
+    handleEnterEvent(event) {
+        if (event.key === "Enter") {
+            if (this.textInput.value !== "") {
+                this.props.socket.emit('chat', this.textInput.value);
+                this.textInput.value = "";    
+            }
+        }
+    }
+
     render() {
 
         const userIds = Object.keys(this.props.users); 
@@ -30,7 +52,8 @@ class UsersBox extends Component {
                 <input
                     type="text"    
                     className="users-chat-input"
-                    autoFocus    
+                    autoFocus
+                    ref={this.bindInputEvents.bind(this)}    
                 >
                     </input>
                 </div>    

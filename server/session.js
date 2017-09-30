@@ -8,6 +8,10 @@ class Session {
         this.io = socketIO(server);
 
         this.users = {};
+        this.chat = [];
+
+        // chat events, user nickname events
+        this.events = [];
 
         // map of x-y coordinates, values are the color of the cell
         this.boardState = {};
@@ -19,6 +23,7 @@ class Session {
         this.io.emit('canvasclear');
         setInterval(this.tick.bind(this), config.GAME.UPDATE_RATE);
         setInterval(this.usersUpdate.bind(this), config.GAME.USERS_UPDATE_RATE);
+        setInterval(this.processEvents.bind(this), config.GAME.USERS_UPDATE_RATE);
     }
 
     bindSocketEvents(socket) {
@@ -30,7 +35,31 @@ class Session {
         console.log('a user connected');
         socket.on('disconnect', this.deleteUser.bind(this, id))
         socket.on('move', this.handleUserMove.bind(this, id));
+        socket.on('chat', this.handleChat.bind(this, id));
 
+    }
+
+    // go through pending events
+    // process them and emit a changes event
+    processEvents() {
+
+        if (this.events.length) {
+            while (this.events.length) {
+                const event = this.events.shift();
+
+                
+
+            }
+        }
+
+    }
+
+    handleChat(id, msg) {
+        this.events.push({
+            type: 'chat',
+            id,
+            msg
+        })
     }
     
     handleUserMove(id, move) {
