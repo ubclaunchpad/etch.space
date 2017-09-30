@@ -35,7 +35,6 @@ class Session {
     
     handleUserMove(id, move) {
         const user = this.users[id];
-        console.log("MOVE FROM: ", id);
 
         if (Math.abs(move.x) === 0 || Math.abs(move.x) === 1) {
             user.nextPos.x = user.pos.x + (move.x * config.GAME.PIXEL_SIZE);
@@ -58,7 +57,6 @@ class Session {
         const diffs = [];
 
         Object.values(this.users).forEach(user => {
-            console.log(user);
             if ((user.nextPos.x !== user.pos.x) ||
                 (user.nextPos.y !== user.pos.y)) {
                 
@@ -84,7 +82,6 @@ class Session {
         const startingPos = this.getRandomPos();
         const color = this.getRandomColor();
 
-        console.log(startingPos);
         this.users[id] = {
             color,
             pos: startingPos,
