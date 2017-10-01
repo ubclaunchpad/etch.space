@@ -40,8 +40,14 @@ class UsersBox extends Component {
         return (
             <div className="users-box">
                 <div className="users-box-header">
-                    {`${users.length} user(s) online`}
+                    {`${users.length} user${users.length === 1 ? "" : "s"} online`}
                 </div>
+                <div className="users-list-box">
+                    <Scrollbars
+                        autohide
+                        autoHideTimeout={1000}
+                        autoHideDuration={200}
+                    >    
                 <div className="users-list">
                 {users.map((user, i) => {
                     return (
@@ -53,14 +59,21 @@ class UsersBox extends Component {
                         >
                             {user.nick}
                         </div>)
-                    })}
-  
+                            })}
+                </div>        
+                </Scrollbars>    
                 </div>    
-                <Scrollbars ref={this.getScrollbarRef.bind(this)}>
-                <div
-                    className="chat"
-                    ref={this.scrollChatToBottom}
-                >
+                <div className="chat-box">
+                <Scrollbars
+                    ref={this.getScrollbarRef.bind(this)}
+                    style={{
+                        flex: 1
+                    }}
+                    autohide    
+                    autoHideTimeout={1000}
+                    autoHideDuration={200}
+                    >    
+                <div className="chat">        
                         {this.props.chat.map(event => {
                         return (
                             <p className="chat-message">
@@ -74,9 +87,10 @@ class UsersBox extends Component {
                                 {event.content}
                             </p>
                         ) 
-                })}
-                </div>  
+                            })}
+                </div>            
                 </Scrollbars>    
+                </div>    
                 <div className="users-chat-box">
                 <div>me:</div>
                 <input

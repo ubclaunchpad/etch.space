@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Board from './Board';
 import UsersBox from './UsersBox';
 import config from '../config';
+import Logo from './Logo';
 
 class App extends Component {
 
@@ -60,7 +61,7 @@ class App extends Component {
                     chat={this.state.chat}
                 />
                 <div className="page-center">
-                    <div className="title">etch.io</div>
+                    <img className="etch" src="/img/logo.png"/>
                     <Board socket={this.socket}/>
                     <div className="title"
                         style={{
