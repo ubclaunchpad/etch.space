@@ -125,6 +125,8 @@ body {
     position: relative;
     border: 8px solid white;
     border-radius: 25px;
+    image-rendering: pixelated;
+    box-sizing: content-box;
 }
 
 #left {
