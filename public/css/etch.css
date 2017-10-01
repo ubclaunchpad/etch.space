@@ -116,14 +116,14 @@ body {
 
 .housing {
     background-color: #CF4647;
-    border-radius: 15px;
+    /* border-radius: 15px; */
     position: relative;
     margin: auto;
 }
 
 .knob {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     background-color: #eeeeee;
     border-radius: 100%;
     border: 10px solid #ffffff;
@@ -145,17 +145,17 @@ body {
     margin: 0 auto;
     position: relative;
     border: 8px solid white;
-    border-radius: 25px;
+    /* border-radius: 25px; */
     image-rendering: pixelated;
     box-sizing: content-box;
 }
 
 #left {
-    left: -30px;
+    left: -20px;
 }
 
 #right {
-    right: -30px;
+    right: -20px;
 }
 
 .chat {

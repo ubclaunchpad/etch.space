@@ -65,7 +65,7 @@ class App extends Component {
                     <Board socket={this.socket}/>
                     <div className="title"
                         style={{
-                            fontSize: 20
+                            fontSize: 18
                         }}
                     >move with arrow keys ←↑→↓</div>
                 </div>    
