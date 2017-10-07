@@ -9,6 +9,7 @@ module.exports = {
         BOARD_WIDTH: 250,
         BOARD_BEZEL_THICKNESS: 25,
         BOARD_BG_COLOR: '#eaeaea',
-        PIXEL_SIZE: 3
+        PIXEL_SIZE: 3,
+        DEFAULT_USER_NICKNAME: 'anonymous'
     }
 }

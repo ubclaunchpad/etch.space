@@ -28,9 +28,10 @@ class Session {
         this.createUser(id);
 
         console.log('a user connected');
-        socket.on('disconnect', this.disconnectUser.bind(this, id))
         socket.on('move', this.handleMoveEvent.bind(this, id));
         socket.on('chat', this.handleChatEvent.bind(this, id));
+        socket.on('nickname', this.handleNicknameEvent.bind(this, id));
+        socket.on('disconnect', this.disconnectUser.bind(this, id))
 
     }
 
@@ -76,6 +77,17 @@ class Session {
             content,
             stamp
         })
+    }
+
+    handleNicknameEvent(id, nickname) {
+        // if user already has nickname, ignore it
+        if (this.users[id] && this.users[id].nick === config.GAME.DEFAULT_USER_NICKNAME) {
+            const newUser = _.cloneDeep(this.users[id]);
+            newUser.nick = nickname;
+
+            this.createUserEvent(id, newUser);
+
+        }
     }
     
     handleMoveEvent(id, move) {
