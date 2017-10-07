@@ -23,6 +23,7 @@ class App extends Component {
     }
 
     bindSocketEvents(socket) {
+       socket.on('disconnect', () => { location.reload() });
        socket.on('event_batch', this.handleEventBatch.bind(this));
     }
 

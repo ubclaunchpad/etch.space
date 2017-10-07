@@ -36,7 +36,6 @@ class Session {
     }
 
     start() {
-        this.io.emit('canvasclear');
         setInterval(this.tick.bind(this), config.GAME.UPDATE_RATE);
         setInterval(this.processEvents.bind(this), config.GAME.USERS_UPDATE_RATE);
     }
