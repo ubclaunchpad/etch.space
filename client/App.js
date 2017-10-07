@@ -23,33 +23,34 @@ class App extends Component {
     }
 
     bindSocketEvents(socket) {
-       socket.on('users update', this.handleUserUpdate.bind(this));
        socket.on('event_batch', this.handleEventBatch.bind(this));
     }
 
     handleEventBatch(events) {
 
         let chat = this.state.chat;
+        let users = this.state.users;
 
         events.forEach(event => {
 
             switch (event.type) {
                 case 'chat':
                     chat.push(event);
+                    break;
+                case 'user':
+                    users[event.id] = event.user;
+                    break;
                 default:
                     break;    
             }
 
         })
 
-        this.setState({ chat });
-
-    }
-
-    handleUserUpdate(users) {
         this.setState({
+            chat,
             users
         });
+
     }
 
     render() {

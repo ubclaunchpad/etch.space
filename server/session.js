@@ -1,6 +1,7 @@
 const config = require('../config');
 const socketIO = require('socket.io');
 const moment = require('moment');
+const _ = require('lodash');
 
 class Session {
 
@@ -20,13 +21,6 @@ class Session {
         this.io.on('connection', this.bindSocketEvents.bind(this))
     }
 
-    start() {
-        this.io.emit('canvasclear');
-        setInterval(this.tick.bind(this), config.GAME.UPDATE_RATE);
-        setInterval(this.usersUpdate.bind(this), config.GAME.USERS_UPDATE_RATE);
-        setInterval(this.processEvents.bind(this), config.GAME.USERS_UPDATE_RATE);
-    }
-
     bindSocketEvents(socket) {
 
         const id = socket.id;
@@ -34,10 +28,16 @@ class Session {
         this.createUser(id);
 
         console.log('a user connected');
-        socket.on('disconnect', this.deleteUser.bind(this, id))
-        socket.on('move', this.handleUserMove.bind(this, id));
+        socket.on('disconnect', this.disconnectUser.bind(this, id))
+        socket.on('move', this.handleMoveEvent.bind(this, id));
         socket.on('chat', this.handleChatEvent.bind(this, id));
 
+    }
+
+    start() {
+        this.io.emit('canvasclear');
+        setInterval(this.tick.bind(this), config.GAME.UPDATE_RATE);
+        setInterval(this.processEvents.bind(this), config.GAME.USERS_UPDATE_RATE);
     }
 
     // go through pending events
@@ -53,6 +53,8 @@ class Session {
                     case 'chat':
                         this.chat.push(event);
                         break;
+                    case 'user':
+                        this.users[event.id] = event.user;
                     default:
                         break;    
                 }
@@ -76,7 +78,7 @@ class Session {
         })
     }
     
-    handleUserMove(id, move) {
+    handleMoveEvent(id, move) {
         const user = this.users[id];
 
         if (Math.abs(move.x) === 0 || Math.abs(move.x) === 1) {
@@ -89,10 +91,6 @@ class Session {
             user.nextPos.y = Math.min(user.nextPos.y, config.GAME.BOARD_HEIGHT);
         }
 
-    }
-
-    usersUpdate() {
-        this.io.emit('users update', this.users); 
     }
 
     tick() {
@@ -125,7 +123,7 @@ class Session {
         const startingPos = this.getRandomPos();
         const color = this.getRandomColor();
 
-        this.users[id] = {
+        const user = {
             color,
             pos: startingPos,
             nextPos: {
@@ -136,12 +134,30 @@ class Session {
             connected: true
         }
 
+        this.createUserEvent(id, user);
+
         this.updatePixel({
             x: startingPos.x,
             y: startingPos.y,
             color
         })
 
+    }
+
+    createUserEvent(id, user) {
+                this.events.push({
+                    type: 'user',
+                    id,
+                    user
+                })
+            }
+
+    disconnectUser(id) {
+        if (this.users[id]) {
+            const newUser = _.cloneDeep(this.users[id]);
+            newUser.connected = false;
+            this.createUserEvent(id, newUser);
+        }
     }
 
     getRandomColor() {
@@ -157,10 +173,6 @@ class Session {
             x: parseInt(Math.random() * (config.GAME.BOARD_WIDTH - config.GAME.PIXEL_SIZE)),
             y: parseInt(Math.random() * (config.GAME.BOARD_HEIGHT - config.GAME.PIXEL_SIZE))
         }
-    }
-
-    deleteUser(id) {
-        this.users[id].connected = false;
     }
 
     updatePixel(item) {
