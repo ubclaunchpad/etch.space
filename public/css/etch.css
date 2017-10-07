@@ -39,7 +39,6 @@ body {
 }
 
 .title {
-    font-size: 28px;
     font-weight: 100;
     justify-content: center;
     display: flex;
@@ -93,7 +92,6 @@ body {
     margin-top: auto;
     align-items: center;
     padding: 10px;
-    padding-left: 15px;
     border-top: 1px solid #2f2e2e;
     height: 50px;
     width: 100%;
@@ -105,7 +103,6 @@ body {
     height: 50px;
     font-size: 1em;
     font-weight: 100;
-    padding-left: 5px;
     padding-bottom: 4px;
     width: 100%;
     outline: none;
@@ -174,10 +171,17 @@ body {
 }
 
 .chat-stamp {
-    color: #5a5959;
+    color: #757575;
     font-size: 0.9em;
 }
 
 .chat-nick {
     margin-left: 5px;
+}
+
+.chat-send-button {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }

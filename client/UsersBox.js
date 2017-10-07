@@ -19,11 +19,15 @@ class UsersBox extends Component {
 
     handleEnterEvent(event) {
         if (event.key === "Enter") {
-            if (this.textInput.value !== "") {
-                this.props.socket.emit('chat', this.textInput.value);
-                this.textInput.value = "";    
-            }
+                this.sendMessage();
         }
+    }
+
+    sendMessage() {
+        if (this.textInput.value !== "") {
+            this.props.socket.emit('chat', this.textInput.value);
+            this.textInput.value = "";
+        }        
     }
 
     getScrollbarRef(e) {
@@ -40,7 +44,7 @@ class UsersBox extends Component {
         return (
             <div className="users-box">
                 <div className="users-box-header">
-                    {`${users.length} user${users.length === 1 ? "" : "s"} online`}
+                   <span> {`${users.length} user${users.length === 1 ? "" : "s"} online`}</span>
                 </div>
                 <div className="users-list-box">
                     <Scrollbars
@@ -92,14 +96,15 @@ class UsersBox extends Component {
                 </Scrollbars>    
                 </div>    
                 <div className="users-chat-box">
-                <div>me:</div>
                 <input
+                    placeholder="Type a message..."
                     type="text"    
                     className="users-chat-input"
                     autoFocus
                     ref={this.bindInputEvents.bind(this)}    
-                >
+                    >
                     </input>
+                <div className="chat-send-button" onClick={this.sendMessage.bind(this)}>Send</div>        
                 </div>    
             </div>
         )

@@ -61,12 +61,9 @@ class App extends Component {
                     chat={this.state.chat}
                 />
                 <div className="page-center">
-                    <img className="etch" src="/img/logo.png"/>
+                    {/* <img className="etch" src="/img/logo.png"/> */}
                     <Board socket={this.socket}/>
                     <div className="title"
-                        style={{
-                            fontSize: 18
-                        }}
                     >move with arrow keys ←↑→↓</div>
                 </div>    
         </div>
