@@ -3,15 +3,22 @@
     const server = require('http').Server(app);
     const config = require('../config');
     const Session = require('./session');
+    const cookieParser = require('cookie-parser');
 
     app.set('view engine', 'ejs');  
     app.set('views', 'public');
+    app.use(cookieParser());
     app.use(express.static('public'))
 
     const session = new Session(server);
     session.start();
 
-    app.get('/', function(req, res) {  
+    app.get('/', function (req, res) {  
+        
+        if (req.cookies && req.cookies.io) {
+            session.disconnectUser(req.cookies.io);
+        }
+
         res.render('index', {
             boardState: session.boardState,
             chat: session.chat,

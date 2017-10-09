@@ -92,14 +92,16 @@ class Session {
     handleMoveEvent(id, move) {
         const user = this.users[id];
 
+        if (!user) { return; }
+
         if (Math.abs(move.x) === 0 || Math.abs(move.x) === 1) {
             user.nextPos.x = user.pos.x + move.x;
-            user.nextPos.x = Math.min(user.nextPos.x, config.GAME.BOARD_WIDTH);
+            user.nextPos.x = Math.max(0, Math.min(user.nextPos.x, config.GAME.BOARD_WIDTH - 1));
         }
 
         if (Math.abs(move.y) === 0 || Math.abs(move.y) === 1) {
             user.nextPos.y = user.pos.y + move.y;
-            user.nextPos.y = Math.min(user.nextPos.y, config.GAME.BOARD_HEIGHT);
+            user.nextPos.y = Math.max(0, Math.min(user.nextPos.y, config.GAME.BOARD_HEIGHT - 1));
         }
 
     }
@@ -108,14 +110,18 @@ class Session {
 
         const diffs = [];
 
-        Object.values(this.users).forEach(user => {
+        Object.keys(this.users).forEach(id => {
+
+            const user = this.users[id];
+
             if ((user.nextPos.x !== user.pos.x) ||
                 (user.nextPos.y !== user.pos.y)) {
                 
                 diffs.push({
                     x: user.nextPos.x,
                     y: user.nextPos.y,
-                    color: user.color
+                    color: user.color,
+                    id
                 })
 
                 user.pos.x = user.nextPos.x;

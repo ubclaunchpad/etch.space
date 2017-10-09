@@ -14,7 +14,11 @@ class App extends Component {
 
         this.state = {
             users: INITIAL_USERS,
-            chat: INITIAL_CHAT
+            chat: INITIAL_CHAT,
+            pos: {
+                x: 0,
+                y: 0
+            }
         }
     }
 
@@ -23,8 +27,15 @@ class App extends Component {
     }
 
     bindSocketEvents(socket) {
+       socket.on('connect', this.handleConnect.bind(this));
        socket.on('disconnect', () => { location.reload() });
        socket.on('event_batch', this.handleEventBatch.bind(this));
+    }
+
+    handleConnect() {
+        this.setState({
+            id: this.socket.id
+        })
     }
 
     handleEventBatch(events) {
@@ -42,7 +53,7 @@ class App extends Component {
                     users[event.id] = event.user;
                     break;
                 default:
-                    break;    
+                    break;
             }
 
         })
@@ -51,7 +62,6 @@ class App extends Component {
             chat,
             users
         });
-
     }
 
     render() {
@@ -63,8 +73,11 @@ class App extends Component {
                     chat={this.state.chat}
                 />
                 <div className="page-center">
-                    {/* <img className="etch" src="/img/logo.png"/> */}
-                    <Board socket={this.socket}/>
+                    <Board
+                        socket={this.socket}
+                        id={this.state.id}
+                        users={this.state.users}
+                    />
                     <div className="title"
                     >move with arrow keys ←↑→↓</div>
                 </div>    
