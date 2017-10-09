@@ -187,13 +187,17 @@ class Board extends Component {
                      transform: `rotate(${this.state.pos.x * config.GAME.SPIN_FACTOR}deg)`   
                 }}
                 className="knob" id="left"
-            />
+                >
+                <div className="knotch" />    
+            </div>        
             <div
                 style={{
                      transform: `rotate(-${this.state.pos.y * config.GAME.SPIN_FACTOR}deg)`   
                 }}
-                className="knob" id="right"
-            />
+                    className="knob" id="right"
+            >    
+                <div className="knotch" />    
+            </div>        
             </div>        
         )
     }

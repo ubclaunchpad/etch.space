@@ -130,6 +130,16 @@ body {
     bottom: -20px;
 }
 
+.knotch {
+    width: 10px;
+    height: 10px;
+    background: #c1c1c1;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 100%;
+}
+
 .wrapper {
     position: relative;
     display: flex;
