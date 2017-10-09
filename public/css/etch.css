@@ -119,15 +119,12 @@ body {
 }
 
 .knob {
-    width: 60px;
-    height: 60px;
     transition: transform 0.2s;
-    background-color: #eeeeee;
-    border-radius: 100%;
-    border: 3px solid #4a4a4a;
-    border-style: dotted;
     position: absolute;
     bottom: -20px;
+    fill: white;
+    stroke: #9f9f9f;
+    stroke-dasharray: 1.5;
 }
 
 .knotch {
@@ -135,8 +132,8 @@ body {
     height: 10px;
     background: #c1c1c1;
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 15px;
+    left: 15px;
     border-radius: 100%;
 }
 

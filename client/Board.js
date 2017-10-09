@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import config from '../config';
+import Knob from './Knob';
 
 class Board extends Component {
 
@@ -182,22 +183,14 @@ class Board extends Component {
                     >
                 </canvas>
             </div>
-            <div
-                style={{
-                     transform: `rotate(${this.state.pos.x * config.GAME.SPIN_FACTOR}deg)`   
-                }}
-                className="knob" id="left"
-                >
-                <div className="knotch" />    
-            </div>        
-            <div
-                style={{
-                     transform: `rotate(-${this.state.pos.y * config.GAME.SPIN_FACTOR}deg)`   
-                }}
-                    className="knob" id="right"
-            >    
-                <div className="knotch" />    
-            </div>        
+            <Knob
+                    id="left"
+                rotation={this.state.pos.x * config.GAME.SPIN_FACTOR}    
+            />    
+            <Knob
+                    id="right"
+                    rotation={-1 * this.state.pos.y * config.GAME.SPIN_FACTOR}
+            />    
             </div>        
         )
     }
