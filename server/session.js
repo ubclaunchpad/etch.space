@@ -2,10 +2,13 @@ const config = require('../config');
 const socketIO = require('socket.io');
 const moment = require('moment');
 const _ = require('lodash');
+const Recorder = require('./recorder');
 
 class Session {
 
-    constructor(server) {
+    constructor(server, options) {
+
+        this.options = options;
 
         this.io = socketIO(server);
 
@@ -17,6 +20,10 @@ class Session {
 
         // map of x-y coordinates, values are the color of the cell
         this.board = {};
+
+        if (this.options.record) {
+            this.recorder = new Recorder();
+        }        
 
         this.io.on('connection', this.bindSocketEvents.bind(this))
     }
@@ -131,6 +138,10 @@ class Session {
         })
 
         this.updateBoard(diffs);
+
+        if (this.options.record) {
+            this.recorder.appendFrame(diffs);
+        }
 
         this.io.emit('tick', diffs);
     }

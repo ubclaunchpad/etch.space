@@ -10,7 +10,9 @@
     app.use(cookieParser());
     app.use(express.static('public'))
 
-    const session = new Session(server);
+    const session = new Session(server, {
+       record: true 
+    });
     session.start();
 
     app.get('/', function (req, res) {  
