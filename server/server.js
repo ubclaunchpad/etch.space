@@ -14,17 +14,21 @@
     session.start();
 
     app.get('/', function (req, res) {  
-        
-        if (req.cookies && req.cookies.io) {
-            session.disconnectUser(req.cookies.io);
-        }
+       
+        // if (req.cookies && req.cookies.io) {
+        //     session.disconnectUser(req.cookies.io);
+        // }
 
-        res.render('index', {
-            boardState: session.boardState,
-            chat: session.chat,
-            users: session.users
-        })
+        res.render('index', {});
     });
+
+    app.get('/state', (req, res) => {
+        res.json({
+                board: session.board,
+                chat: session.chat,
+                users: session.users
+        })
+    })
 
     server.listen(config.SERVER.PORT, function(){
         console.log(`listening on *:${config.SERVER.PORT}`);

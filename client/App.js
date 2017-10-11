@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import Board from './Board';
 import UsersBox from './UsersBox';
 import config from '../config';
@@ -13,30 +14,69 @@ class App extends Component {
         this.socket = io();
 
         this.state = {
-            users: INITIAL_USERS,
-            chat: INITIAL_CHAT,
-            pos: {
-                x: 0,
-                y: 0
-            }
+            started: false,
+            board: {},
+            boardDiffs: [],
+            chat: [],
+            users: {}
         }
     }
 
     componentDidMount() {
-        this.bindSocketEvents(this.socket);
+       this.socket.on('connect', this.handleConnect.bind(this));
+       this.bindSocketEvents(this.socket);
+
+        // request state
+
+        fetch('/state')
+            .then(res => res.json())
+            .then(state => {
+
+                // replay any state recieved in the meantime
+                // on top of this older state
+
+                const mergedState = _.merge(state, this.state);                
+                mergedState.started = true;
+
+                this.setState(mergedState);
+        })
+
     }
 
     bindSocketEvents(socket) {
-       socket.on('connect', this.handleConnect.bind(this));
        socket.on('disconnect', () => { location.reload() });
        socket.on('event_batch', this.handleEventBatch.bind(this));
+       socket.on('tick', this.handleTick.bind(this)); 
     }
 
     handleConnect() {
         this.setState({
-            id: this.socket.id
+            id: this.socket.id,
         })
     }
+
+
+    handleTick(diffs) {
+        
+                const board = this.state.board;
+        
+                diffs.forEach(function (diff) {
+        
+                    // update board
+                    if (!board[diff.x]) {
+                        board[diff.x] = {};
+                    }
+            
+                    board[diff.x][diff.y] = diff.color;
+        
+                }, this);
+        
+                this.setState({
+                    board,
+                    boardDiffs: diffs
+                })
+        
+            }
 
     handleEventBatch(events) {
 
@@ -65,6 +105,11 @@ class App extends Component {
     }
 
     render() {
+
+        if (!this.state.started) {
+            return null;
+        }
+
         return (
         <div className="page">
                 <UsersBox
@@ -77,6 +122,8 @@ class App extends Component {
                         socket={this.socket}
                         id={this.state.id}
                         users={this.state.users}
+                        board={this.state.board}
+                        diffs={this.state.boardDiffs}
                     />
                     <div className="title"
                     >move with arrow keys ←↑→↓</div>

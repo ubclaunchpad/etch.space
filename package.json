@@ -4,7 +4,8 @@
   "description": "etch.io server",
   "scripts": {
     "start": "node server/server.js",
-    "build": "webpack"
+    "build": "webpack",
+    "deploy": "npm install && webpack && node server/server.js"
   },
   "dependencies": {
     "ejs": "^2.5.7",

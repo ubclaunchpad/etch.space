@@ -16,7 +16,7 @@ class Session {
         this.events = [];
 
         // map of x-y coordinates, values are the color of the cell
-        this.boardState = {};
+        this.board = {};
 
         this.io.on('connection', this.bindSocketEvents.bind(this))
     }
@@ -130,7 +130,7 @@ class Session {
             }
         })
 
-        this.updateBoardState(diffs);
+        this.updateBoard(diffs);
 
         this.io.emit('tick', diffs);
     }
@@ -193,14 +193,14 @@ class Session {
     }
 
     updatePixel(item) {
-        if (!this.boardState[item.x]) {
-            this.boardState[item.x] = {};
+        if (!this.board[item.x]) {
+            this.board[item.x] = {};
         }
 
-        this.boardState[item.x][item.y] = item.color;
+        this.board[item.x][item.y] = item.color;
     }
 
-    updateBoardState(diffs) {
+    updateBoard(diffs) {
         diffs.forEach(diff => this.updatePixel(diff))
    }
 }
