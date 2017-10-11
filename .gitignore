@@ -3,3 +3,4 @@ node_modules
 public/js/bundle.js
 server/recordings
 server/gif/tmp
+*.gif
