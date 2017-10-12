@@ -1,13 +1,16 @@
 const fs = require('fs');
 const moment = require('moment');
+const logger = require('./logger');
 
 class Recorder {
 
     constructor() {
         this.name = moment().format();
 
-        const DIR = __dirname + '/recordings'
-        const EXT = '';
+        this.frames = 0;
+
+        const DIR = __dirname + '/rec'
+        const EXT = '.rec';
 
         this.path = DIR + '/' + this.name + EXT;
 
@@ -21,14 +24,12 @@ class Recorder {
     }
 
     appendFrame(board) {
-        fs.appendFile(this.path,JSON.stringify(board) + '\n', function (err) {
+        fs.appendFile(this.path, JSON.stringify(board) + '\n', function (err) {
             if (err) {
-                console.log(err);
+                logger.error(err)
             }
-            console.log('Saved frame');
         });
     }
-
 }
 
 module.exports = Recorder;

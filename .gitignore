@@ -4,3 +4,6 @@ public/js/bundle.js
 server/recordings
 server/gif/tmp
 *.gif
+*.sketch
+*.pyc
+*.log

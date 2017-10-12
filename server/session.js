@@ -3,12 +3,13 @@ const socketIO = require('socket.io');
 const moment = require('moment');
 const _ = require('lodash');
 const Recorder = require('./recorder');
+const logger = require('./logger');
 
 class Session {
 
-    constructor(server, options) {
+    constructor(server) {
 
-        this.options = options;
+        this.logStateOnCrash();
 
         this.io = socketIO(server);
 
@@ -21,9 +22,8 @@ class Session {
         // map of x-y coordinates, values are the color of the cell
         this.board = {};
 
-        if (this.options.record) {
-            this.recorder = new Recorder();
-        }        
+        this.recording = false;
+        this.recorder = null;
 
         this.io.on('connection', this.bindSocketEvents.bind(this))
     }
@@ -34,12 +34,35 @@ class Session {
 
         this.createUser(id);
 
-        console.log('a user connected');
+        logger.info('User connected')
         socket.on('move', this.handleMoveEvent.bind(this, id));
         socket.on('chat', this.handleChatEvent.bind(this, id));
         socket.on('nickname', this.handleNicknameEvent.bind(this, id));
         socket.on('disconnect', this.disconnectUser.bind(this, id))
 
+    }
+
+    logStateOnCrash() {
+        process.on('uncaughtException', (err) => {
+
+            logger.info('STATE: ')
+
+            logger.info('USERS: ')
+            logger.info(JSON.stringify(this.users))
+
+            logger.info('CHAT: ')
+            logger.info(JSON.stringify(this.chat))
+
+            logger.info('EVENTS: ')
+            logger.info(JSON.stringify(this.events))
+
+            logger.info('BOARD: ')
+            logger.info(JSON.stringify(this.board))
+
+            // kinda hacky, but writing to the log is async
+            // so we can't exit right away
+            setTimeout(() => {process.exit(1)}, 2000)
+          })
     }
 
     start() {
@@ -52,8 +75,6 @@ class Session {
     processEvents() {
 
         if (this.events.length) {
-
-            console.log(this.events);
 
             this.events.forEach((event) => {
                 switch (event.type) {
@@ -139,7 +160,7 @@ class Session {
 
         this.updateBoard(diffs);
 
-        if (this.options.record) {
+        if (this.recording) {
             this.recorder.appendFrame(diffs);
         }
 
@@ -213,7 +234,21 @@ class Session {
 
     updateBoard(diffs) {
         diffs.forEach(diff => this.updatePixel(diff))
-   }
+    }
+   
+    toggleRecord() {
+
+        if (!this.recorder) {
+            this.recorder = new Recorder()
+        }
+        else {
+            this.recorder = null;
+        }
+
+        this.recording = !this.recording
+
+    }
+
 }
 
 module.exports = Session;
