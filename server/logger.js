@@ -11,18 +11,26 @@ if (!fs.existsSync(LOG_DIR)){
     fs.mkdirSync(LOG_DIR);
 }
 
+const format = winston.format.printf(info => {
+    return `${info.timestamp} ${info.level}: ${info.message}`;
+});
+
+const formats = winston.format.combine(
+    winston.format.timestamp(),
+    format
+)
+
 const logger = winston.createLogger({
     level: 'info',
     transports: [
         new winston.transports.File({
             filename: LOG_PATH,
-            format: winston.format.simple(),
-            handleExceptions: true
+            format: formats,
+            handleExceptions: true,
         }),
         new winston.transports.Console({
-            'timestamp': true,
-            format: winston.format.simple(),
-            handleExceptions: true
+            format: formats,
+            handleExceptions: true,
         })
     ],
 });
