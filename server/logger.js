@@ -1,8 +1,15 @@
 const winston = require('winston');
 const moment = require('moment');
+const fs = require('fs');
 
 const LOG_NAME = moment().format() + '.log';
-const LOG_PATH = './server/log/' + LOG_NAME;
+const LOG_DIR = './server/log'
+const LOG_PATH = LOG_DIR + '/' + LOG_NAME;
+
+// create log directory
+if (!fs.existsSync(LOG_DIR)){
+    fs.mkdirSync(LOG_DIR);
+}
 
 const logger = winston.createLogger({
     level: 'info',
