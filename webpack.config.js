@@ -1,10 +1,10 @@
 const webpack = require('webpack');
 
 module.exports = {
-    entry: __dirname + '/client/index.js',
+    entry: `${__dirname}/client/index.js`,
     output: {
-        path: __dirname + '/public/js',
-        filename: "bundle.js"
+        path: `${__dirname}/public/js`,
+        filename: 'bundle.js'
     },
     plugins: [
         new webpack.ProvidePlugin({
@@ -13,15 +13,15 @@ module.exports = {
     ],
     module: {
         loaders: [
-            { test: /\.css$/, loader: "style!css" },
+            { test: /\.css$/, loader: 'style!css' },
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
-                  loader: 'babel-loader',
-                  options: {
-                    presets: ['react', 'es2015']
-                  }
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['react', 'es2015']
+                    }
                 }
             }
         ]

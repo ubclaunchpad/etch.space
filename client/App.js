@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Board from './Board';
 import UsersBox from './UsersBox';
-import config from '../config';
-import Logo from './Logo';
 
 class App extends Component {
-
     constructor(props) {
         super(props);
 
@@ -19,84 +16,75 @@ class App extends Component {
             boardDiffs: [],
             chat: [],
             users: {}
-        }
+        };
     }
 
     componentDidMount() {
-       this.socket.on('connect', this.handleConnect.bind(this));
-       this.bindSocketEvents(this.socket);
+        this.socket.on('connect', this.handleConnect.bind(this));
+        this.bindSocketEvents(this.socket);
 
         // request state
 
         fetch('/state')
             .then(res => res.json())
-            .then(state => {
-
+            .then((state) => {
                 // replay any state recieved in the meantime
                 // on top of this older state
 
-                const mergedState = _.merge(state, this.state);                
+                const mergedState = _.merge(state, this.state);
                 mergedState.started = true;
 
                 this.setState(mergedState);
-        })
-
+            });
     }
 
     bindSocketEvents(socket) {
-       socket.on('disconnect', () => { location.reload() });
-       socket.on('event_batch', this.handleEventBatch.bind(this));
-       socket.on('tick', this.handleTick.bind(this)); 
+        socket.on('disconnect', () => { location.reload(); });
+        socket.on('event_batch', this.handleEventBatch.bind(this));
+        socket.on('tick', this.handleTick.bind(this));
     }
 
     handleConnect() {
         this.setState({
-            id: this.socket.id,
-        })
+            id: this.socket.id
+        });
     }
 
 
     handleTick(diffs) {
-        
-                const board = this.state.board;
-        
-                diffs.forEach(function (diff) {
-        
-                    // update board
-                    if (!board[diff.x]) {
-                        board[diff.x] = {};
-                    }
-            
-                    board[diff.x][diff.y] = diff.color;
-        
-                }, this);
-        
-                this.setState({
-                    board,
-                    boardDiffs: diffs
-                })
-        
+        const board = this.state.board;
+
+        diffs.forEach((diff) => {
+            // update board
+            if (!board[diff.x]) {
+                board[diff.x] = {};
             }
+
+            board[diff.x][diff.y] = diff.color;
+        }, this);
+
+        this.setState({
+            board,
+            boardDiffs: diffs
+        });
+    }
 
     handleEventBatch(events) {
+        const chat = this.state.chat;
+        const users = this.state.users;
 
-        let chat = this.state.chat;
-        let users = this.state.users;
-
-        events.forEach(event => {
-
+        events.forEach((event) => {
             switch (event.type) {
-                case 'chat':
-                    chat.push(event);
-                    break;
-                case 'user':
-                    users[event.id] = event.user;
-                    break;
-                default:
-                    break;
+            case 'chat':
+                chat.push(event);
+                break;
+            case 'user':
+                users[event.id] = event.user;
+                break;
+            default:
+                break;
             }
-
-        })
+        });
 
         this.setState({
             chat,
@@ -105,13 +93,12 @@ class App extends Component {
     }
 
     render() {
-
         if (!this.state.started) {
             return null;
         }
 
         return (
-        <div className="page">
+            <div className="page">
                 <UsersBox
                     socket={this.socket}
                     users={this.state.users}
@@ -127,11 +114,10 @@ class App extends Component {
                     />
                     <div className="title"
                     >move with arrow keys ←↑→↓</div>
-                </div>    
-        </div>
-        )
+                </div>
+            </div>
+        );
     }
-
 }
 
 export default App;

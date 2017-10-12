@@ -14,3 +14,4 @@ module.exports = {
         SPIN_FACTOR: 3
     }
 }
+;

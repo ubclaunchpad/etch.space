@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import config from '../config';
 
 class Knob extends Component {
     render() {
@@ -8,14 +7,14 @@ class Knob extends Component {
                 id={this.props.id}
                 className="knob"
                 style={{
-                     transform: `rotate(${this.props.rotation}deg)`   
+                    transform: `rotate(${this.props.rotation}deg)`
                 }}
                 width="61px"
                 height="61px"
                 viewBox="0 0 61 61"
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
-            
+
             >
                 <title>Oval</title>
                 <desc>Created with Sketch.</desc>
@@ -28,8 +27,8 @@ class Knob extends Component {
                 <g id="Page-1" strokeWidth="1" fillRule="evenodd">
                     <use id="Oval" mask="url(#mask-2)" strokeWidth="14" xlinkHref="#path-1"></use>
                 </g>
-                </svg>            
-        ) 
+            </svg>
+        );
     }
 }
 

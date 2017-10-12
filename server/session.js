@@ -6,9 +6,7 @@ const Recorder = require('./recorder');
 const logger = require('./logger');
 
 class Session {
-
     constructor(server) {
-
         process.on('uncaughtException', this.handleCrash);
 
         this.io = socketIO(server);
@@ -25,21 +23,19 @@ class Session {
         this.recording = false;
         this.recorder = null;
 
-        this.io.on('connection', this.bindSocketEvents.bind(this))
+        this.io.on('connection', this.bindSocketEvents.bind(this));
     }
 
     bindSocketEvents(socket) {
-
         const id = socket.id;
 
         this.createUser(id);
 
-        logger.info('User connected')
+        logger.info('User connected');
         socket.on('move', this.handleMoveEvent.bind(this, id));
         socket.on('chat', this.handleChatEvent.bind(this, id));
         socket.on('nickname', this.handleNicknameEvent.bind(this, id));
-        socket.on('disconnect', this.disconnectUser.bind(this, id))
-
+        socket.on('disconnect', this.disconnectUser.bind(this, id));
     }
 
 
@@ -51,29 +47,26 @@ class Session {
     // go through pending events
     // process them and emit a changes event
     processEvents() {
-
         if (this.events.length) {
-
             this.events.forEach((event) => {
                 switch (event.type) {
-                    case 'chat':
-                        this.chat.push(event);
-                        break;
-                    case 'user':
-                        this.users[event.id] = event.user;
-                    default:
-                        break;    
+                case 'chat':
+                    this.chat.push(event);
+                    break;
+                case 'user':
+                    this.users[event.id] = event.user;
+                    break;
+                default:
+                    break;
                 }
-            })
+            });
 
             this.io.emit('event_batch', this.events);
             this.events = [];
         }
-
     }
 
     handleChatEvent(id, content) {
-
         const stamp = new moment().unix();
 
         this.events.push({
@@ -81,7 +74,7 @@ class Session {
             id,
             content,
             stamp
-        })
+        });
     }
 
     handleNicknameEvent(id, nickname) {
@@ -91,10 +84,9 @@ class Session {
             newUser.nick = nickname;
 
             this.createUserEvent(id, newUser);
-
         }
     }
-    
+
     handleMoveEvent(id, move) {
         const user = this.users[id];
 
@@ -109,32 +101,27 @@ class Session {
             user.nextPos.y = user.pos.y + move.y;
             user.nextPos.y = Math.max(0, Math.min(user.nextPos.y, config.GAME.BOARD_HEIGHT - 1));
         }
-
     }
 
     tick() {
-
         const diffs = [];
 
-        Object.keys(this.users).forEach(id => {
-
+        Object.keys(this.users).forEach((id) => {
             const user = this.users[id];
 
             if ((user.nextPos.x !== user.pos.x) ||
                 (user.nextPos.y !== user.pos.y)) {
-                
                 diffs.push({
                     x: user.nextPos.x,
                     y: user.nextPos.y,
                     color: user.color,
                     id
-                })
+                });
 
                 user.pos.x = user.nextPos.x;
                 user.pos.y = user.nextPos.y;
-
             }
-        })
+        });
 
         this.updateBoard(diffs);
 
@@ -146,7 +133,6 @@ class Session {
     }
 
     createUser(id) {
-
         const startingPos = this.getRandomPos();
         const color = this.getRandomColor();
 
@@ -159,7 +145,7 @@ class Session {
             },
             nick: 'anonymous',
             connected: true
-        }
+        };
 
         this.createUserEvent(id, user);
 
@@ -167,17 +153,16 @@ class Session {
             x: startingPos.x,
             y: startingPos.y,
             color
-        })
-
+        });
     }
 
     createUserEvent(id, user) {
-                this.events.push({
-                    type: 'user',
-                    id,
-                    user
-                })
-            }
+        this.events.push({
+            type: 'user',
+            id,
+            user
+        });
+    }
 
     disconnectUser(id) {
         if (this.users[id]) {
@@ -199,7 +184,7 @@ class Session {
         return {
             x: parseInt(Math.random() * (config.GAME.BOARD_WIDTH - config.GAME.PIXEL_SIZE)),
             y: parseInt(Math.random() * (config.GAME.BOARD_HEIGHT - config.GAME.PIXEL_SIZE))
-        }
+        };
     }
 
     updatePixel(item) {
@@ -211,41 +196,37 @@ class Session {
     }
 
     updateBoard(diffs) {
-        diffs.forEach(diff => this.updatePixel(diff))
+        diffs.forEach(diff => this.updatePixel(diff));
     }
-   
-    toggleRecord() {
 
+    toggleRecord() {
         if (!this.recorder) {
-            this.recorder = new Recorder()
-        }
-        else {
+            this.recorder = new Recorder();
+        } else {
             this.recorder = null;
         }
 
-        this.recording = !this.recording
-
+        this.recording = !this.recording;
     }
 
     handleCrash(err) {
-        
-        logger.info('STATE: ')
+        logger.info('STATE: ');
 
-        logger.info('USERS: ')
-        logger.info(JSON.stringify(this.users))
+        logger.info('USERS: ');
+        logger.info(JSON.stringify(this.users));
 
-        logger.info('CHAT: ')
-        logger.info(JSON.stringify(this.chat))
+        logger.info('CHAT: ');
+        logger.info(JSON.stringify(this.chat));
 
-        logger.info('EVENTS: ')
-        logger.info(JSON.stringify(this.events))
+        logger.info('EVENTS: ');
+        logger.info(JSON.stringify(this.events));
 
-        logger.info('BOARD: ')
-        logger.info(JSON.stringify(this.board))
+        logger.info('BOARD: ');
+        logger.info(JSON.stringify(this.board));
 
         // kinda hacky, but writing to the log is async
         // so we can't exit right away
-        setTimeout(() => {process.exit(1)}, 2000)
+        setTimeout(() => { process.exit(1); }, 2000);
     }
 }
 

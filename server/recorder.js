@@ -3,19 +3,18 @@ const moment = require('moment');
 const logger = require('./logger');
 
 class Recorder {
-
     constructor() {
         this.name = moment().format();
 
         this.frames = 0;
 
-        const DIR = __dirname + '/rec'
+        const DIR = `${__dirname}/rec`;
         const EXT = '.rec';
 
-        this.path = DIR + '/' + this.name + EXT;
+        this.path = `${DIR}/${this.name}${EXT}`;
 
         // create directory
-        if (!fs.existsSync(DIR)){
+        if (!fs.existsSync(DIR)) {
             fs.mkdirSync(DIR);
         }
 
@@ -24,9 +23,9 @@ class Recorder {
     }
 
     appendFrame(board) {
-        fs.appendFile(this.path, JSON.stringify(board) + '\n', function (err) {
+        fs.appendFile(this.path, `${JSON.stringify(board)}\n`, (err) => {
             if (err) {
-                logger.error(err)
+                logger.error(err);
             }
         });
     }
