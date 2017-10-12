@@ -9,7 +9,7 @@ class Session {
 
     constructor(server) {
 
-        this.logStateOnCrash();
+        process.on('uncaughtException', this.handleCrash);
 
         this.io = socketIO(server);
 
@@ -42,28 +42,6 @@ class Session {
 
     }
 
-    logStateOnCrash() {
-        process.on('uncaughtException', (err) => {
-
-            logger.info('STATE: ')
-
-            logger.info('USERS: ')
-            logger.info(JSON.stringify(this.users))
-
-            logger.info('CHAT: ')
-            logger.info(JSON.stringify(this.chat))
-
-            logger.info('EVENTS: ')
-            logger.info(JSON.stringify(this.events))
-
-            logger.info('BOARD: ')
-            logger.info(JSON.stringify(this.board))
-
-            // kinda hacky, but writing to the log is async
-            // so we can't exit right away
-            setTimeout(() => {process.exit(1)}, 2000)
-          })
-    }
 
     start() {
         setInterval(this.tick.bind(this), config.GAME.UPDATE_RATE);
@@ -249,6 +227,26 @@ class Session {
 
     }
 
+    handleCrash(err) {
+        
+        logger.info('STATE: ')
+
+        logger.info('USERS: ')
+        logger.info(JSON.stringify(this.users))
+
+        logger.info('CHAT: ')
+        logger.info(JSON.stringify(this.chat))
+
+        logger.info('EVENTS: ')
+        logger.info(JSON.stringify(this.events))
+
+        logger.info('BOARD: ')
+        logger.info(JSON.stringify(this.board))
+
+        // kinda hacky, but writing to the log is async
+        // so we can't exit right away
+        setTimeout(() => {process.exit(1)}, 2000)
+    }
 }
 
 module.exports = Session;
