@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "description": "etch.io server",
   "scripts": {
-    "start": "node server/server.js",
-    "deploy": "npm install && webpack && node server/server.js",
+    "start": "NODE_ENV=development node server/server.js",
+    "start-prod": "NODE_ENV=production node server/server.js",
+    "build": "npm install && webpack",
     "clear-log": "rm -rf ./server/log/*",
     "clear-rec": "rm -rf ./server/rec/*"
   },

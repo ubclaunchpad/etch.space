@@ -18,17 +18,25 @@ const formats = winston.format.combine(
     format
 );
 
-const logger = winston.createLogger({
-    level: 'info',
-    transports: [
-        new winston.transports.File({
-            filename: LOG_PATH,
-            format: formats
-        }),
+const transports = [
+    new winston.transports.File({
+        filename: LOG_PATH,
+        format: formats
+    })
+];
+
+// only log to console in development
+if (process.env.NODE_ENV === 'development') {
+    transports.push(
         new winston.transports.Console({
             format: formats
         })
-    ]
+    );
+}
+
+const logger = winston.createLogger({
+    level: 'info',
+    transports
 });
 
 module.exports = logger;
