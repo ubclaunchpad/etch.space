@@ -7,7 +7,7 @@ const logger = require('./logger');
 
 class Session {
     constructor(server) {
-        process.on('uncaughtException', this.handleCrash);
+        process.on('uncaughtException', this.handleCrash.bind(this));
 
         this.io = socketIO(server);
 
@@ -22,6 +22,8 @@ class Session {
 
         this.recording = false;
         this.recorder = null;
+
+        throw new Error('TEST');
 
         this.io.on('connection', this.bindSocketEvents.bind(this));
     }
@@ -210,6 +212,8 @@ class Session {
     }
 
     handleCrash(err) {
+        logger.info('Unhandled Exception: ');
+
         logger.info('STATE: ');
 
         logger.info('USERS: ');
@@ -223,6 +227,8 @@ class Session {
 
         logger.info('BOARD: ');
         logger.info(JSON.stringify(this.board));
+
+        logger.error(err.stack);
 
         // kinda hacky, but writing to the log is async
         // so we can't exit right away

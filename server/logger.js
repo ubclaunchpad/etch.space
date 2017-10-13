@@ -23,12 +23,10 @@ const logger = winston.createLogger({
     transports: [
         new winston.transports.File({
             filename: LOG_PATH,
-            format: formats,
-            handleExceptions: true
+            format: formats
         }),
         new winston.transports.Console({
-            format: formats,
-            handleExceptions: true
+            format: formats
         })
     ]
 });
