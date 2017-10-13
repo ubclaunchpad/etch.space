@@ -23,8 +23,6 @@ class Session {
         this.recording = false;
         this.recorder = null;
 
-        throw new Error('TEST');
-
         this.io.on('connection', this.bindSocketEvents.bind(this));
     }
 
