@@ -36,7 +36,6 @@ class Board extends Component {
 
     bindSocketEvents(socket) {
         document.onkeydown = function (e) {
-            console.log('down');
             e = e || window.event;
 
             if (e.keyCode == KEYCODES.UP) {
@@ -73,9 +72,6 @@ class Board extends Component {
             );
         }
 
-        console.log(cursorColor);
-        console.log(color);
-
         this.drawPixel(
             x,
             y,
@@ -91,7 +87,6 @@ class Board extends Component {
     }
 
     drawPixel(x, y, color) {
-        console.log('color: ' + color);
         this.ctx.fillStyle = color;
         this.ctx.fillRect(x, y, 1, 1);
     }
