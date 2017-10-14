@@ -69,6 +69,8 @@ class Session {
     handleChatEvent(id, content) {
         const stamp = new moment().unix();
 
+        if(content.length > 200) return;
+
         this.events.push({
             type: 'chat',
             id,
