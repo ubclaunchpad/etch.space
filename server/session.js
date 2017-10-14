@@ -7,7 +7,7 @@ const logger = require('./logger');
 
 class Session {
     constructor(server) {
-        process.on('uncaughtException', this.handleCrash.bind(this));
+        // process.on('uncaughtException', this.handleCrash.bind(this));
 
         this.io = socketIO(server);
 
@@ -209,29 +209,29 @@ class Session {
         this.recording = !this.recording;
     }
 
-    handleCrash(err) {
-        logger.info('Unhandled Exception: ');
+    // handleCrash(err) {
+    //     logger.info('Unhandled Exception: ');
 
-        logger.info('STATE: ');
+    //     logger.info('STATE: ');
 
-        logger.info('USERS: ');
-        logger.info(JSON.stringify(this.users));
+    //     logger.info('USERS: ');
+    //     logger.info(JSON.stringify(this.users));
 
-        logger.info('CHAT: ');
-        logger.info(JSON.stringify(this.chat));
+    //     logger.info('CHAT: ');
+    //     logger.info(JSON.stringify(this.chat));
 
-        logger.info('EVENTS: ');
-        logger.info(JSON.stringify(this.events));
+    //     logger.info('EVENTS: ');
+    //     logger.info(JSON.stringify(this.events));
 
-        logger.info('BOARD: ');
-        logger.info(JSON.stringify(this.board));
+    //     logger.info('BOARD: ');
+    //     logger.info(JSON.stringify(this.board));
 
-        logger.error(err.stack);
+    //     logger.error(err.stack);
 
-        // kinda hacky, but writing to the log is async
-        // so we can't exit right away
-        setTimeout(() => { process.exit(1); }, 2000);
-    }
+    //     // kinda hacky, but writing to the log is async
+    //     // so we can't exit right away
+    //     setTimeout(() => { process.exit(1); }, 2000);
+    // }
 }
 
 module.exports = Session;

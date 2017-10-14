@@ -48,7 +48,7 @@ app.get('/record', (req, res) => {
 });
 
 // error handling middleware
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
     logger.error(err.stack);
     res.status(500).send('Internal Error');
 });

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Board from './Board';
 import UsersBox from './UsersBox';
+import Popup from './Popup';
 
 class App extends Component {
     constructor(props) {
@@ -15,7 +16,8 @@ class App extends Component {
             board: {},
             boardDiffs: [],
             chat: [],
-            users: {}
+            users: {},
+            popupOpen: true
         };
     }
 
@@ -99,6 +101,13 @@ class App extends Component {
 
         return (
             <div className="page">
+                {this.id && this.state.popupOpen ?
+                    <Popup
+                        users={this.state.users}
+                        id={this.id}
+                    />
+                    : null
+                }
                 <UsersBox
                     socket={this.socket}
                     users={this.state.users}
