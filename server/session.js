@@ -134,10 +134,12 @@ class Session {
 
     createUser(id) {
         const startingPos = this.getRandomPos();
-        const color = this.getRandomColor();
+        const color = this.getLimitedRandomColor(0.2,0.8);
+        const cursorColor = this.offsetColor(color);
 
         const user = {
             color,
+            cursorColor,
             pos: startingPos,
             nextPos: {
                 x: startingPos.x,
@@ -172,12 +174,53 @@ class Session {
         }
     }
 
-    getRandomColor() {
-        const r = Math.floor(Math.random() * 256);
-        const g = Math.floor(Math.random() * 256);
-        const b = Math.floor(Math.random() * 256);
+    getRandomColorComponents() {
+        return {
+            r: Math.floor(Math.random() * 256),
+            g: Math.floor(Math.random() * 256),
+            b: Math.floor(Math.random() * 256) 
+        }
+    }
 
-        return `rgb(${r}, ${g}, ${b})`;
+    getRandomColor() {
+        const color = this.getRandomColorComponents();
+        return `rgb(${color.r}, ${color.g}, ${color.b})`;
+    }
+
+    getLimitedRandomColor(minBrightness, maxBrightness) {
+        do {
+            var color = this.getRandomColorComponents();
+        } while(this.calcBrightness(color) > maxBrightness || this.calcBrightness(color) < minBrightness)
+        
+        return this.colorToRGB(color);
+    }
+
+    colorToRGB(color) {
+        return `rgb(${color.r}, ${color.g}, ${color.b})`;
+    }
+
+    calcBrightness(color) {
+        return (0.2126*color.r + 0.7152*color.g + 0.0722*color.b)/255;
+    }
+
+    offsetColor(color) {
+        var brightness = this.calcBrightness();
+        var newColor = {
+            r: color.r,
+            g: color.g,
+            b: color.b
+        }
+        if (brightness > 0.5) {
+            for(key in newColor.keys) {
+                newColor[key] = newColor[key]*0.9;
+            }
+        }
+        else {
+            for(key in newColor.keys) {
+                newColor[key] = newColor[key]*1.1;
+            }
+        }
+        return newColor;
     }
 
     getRandomPos() {
