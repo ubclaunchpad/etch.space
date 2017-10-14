@@ -113,7 +113,7 @@ body {
 
 .housing {
     background-color: #CF4647;
-    /* border-radius: 15px; */
+    border-radius: 15px;
     position: relative;
     margin: auto;
 }
@@ -151,7 +151,7 @@ body {
     margin: 0 auto;
     position: relative;
     border: 8px solid white;
-    /* border-radius: 25px; */
+    border-radius: 25px;
     image-rendering: pixelated;
     box-sizing: content-box;
 }
