@@ -16,7 +16,8 @@ class Board extends Component {
         this.state = {
             pos: {
                 x: null,
-                y: null
+                y: null,
+                color: null
             }
         };
     }
@@ -56,26 +57,29 @@ class Board extends Component {
             // update out current position
             // draw black pixel on current pos
             if (diff.id === this.props.id) {
-                this.updatePos(diff.x, diff.y);
+                this.updatePos(diff.x, diff.y, diff.color, diff.cursorColor);
             } else {
                 this.drawPixel(diff.x, diff.y, diff.color);
             }
         }, this);
     }
 
-    updatePos(x, y) {
+    updatePos(x, y, color, cursorColor) {
         if (this.state.pos.x !== null && this.state.pos.y !== null) {
             this.drawPixel(
                 this.state.pos.x,
                 this.state.pos.y,
-                this.props.board[this.state.pos.x][this.state.pos.y]
+                color
             );
         }
+
+        console.log(cursorColor);
+        console.log(color);
 
         this.drawPixel(
             x,
             y,
-            'black'
+            cursorColor
         );
 
         this.setState({
@@ -87,6 +91,7 @@ class Board extends Component {
     }
 
     drawPixel(x, y, color) {
+        console.log('color: ' + color);
         this.ctx.fillStyle = color;
         this.ctx.fillRect(x, y, 1, 1);
     }
