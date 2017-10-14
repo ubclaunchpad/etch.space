@@ -12,7 +12,10 @@ class Session {
         // map of x-y coordinates, values are the color of the cell
         this.boardState = {};
 
-        this.io.on('connection', this.bindSocketEvents.bind(this))
+        this.io.on('connection', this.bindSocketEvents.bind(this));
+       // this.io.on('connection', (socket) => {
+            
+        //});
     }
 
     start() {
@@ -22,15 +25,14 @@ class Session {
     }
 
     bindSocketEvents(socket) {
-
         const id = socket.id;
 
         this.createUser(id);
 
         console.log('a user connected');
+
         socket.on('disconnect', this.deleteUser.bind(this, id))
         socket.on('move', this.handleUserMove.bind(this, id));
-
     }
     
     handleUserMove(id, move) {

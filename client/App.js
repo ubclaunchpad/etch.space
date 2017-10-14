@@ -7,7 +7,7 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-
+        this.socket = io();
         this.state = {
             users: {}
         }
@@ -15,26 +15,28 @@ class App extends Component {
 
     componentDidMount() {
         console.log('attempting connection');
-        const socket = io();
 
-        this.bindSocketEvents(socket);
+        this.bindSocketEvents();
     }
 
-    bindSocketEvents(socket) {
-        socket.on('users update', this.handleUserUpdate.bind(this));
+    bindSocketEvents() {
+        this.socket.on('users update', this.handleUserUpdate.bind(this));
     }
 
     handleUserUpdate(users) {
         this.setState({ users });
     }
+    
+    handleClick() {
 
+    }
     render() {
         return (
         <div className="page">
                 <UsersBox users={this.state.users} />
                 <div className="page-center">
                     <div className="title">etch.io</div>
-                    <Board />
+                    <Board socket={this.socket}/>
                     <div className="title"
                         style={{
                             fontSize: 20

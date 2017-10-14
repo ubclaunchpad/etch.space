@@ -7,9 +7,8 @@ class Board extends Component {
         this.drawInitialBoard();
 
         console.log('attempting connection');
-        const socket = io();
 
-        this.bindSocketEvents(socket);
+        this.bindSocketEvents(this.props.socket);
     }
 
     bindSocketEvents(socket) {
