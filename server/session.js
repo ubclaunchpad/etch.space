@@ -206,7 +206,6 @@ class Session {
 
     offsetColor(color) {
         var brightness = this.calcBrightness(color);
-        console.log(brightness);
         var newColor = {
             r: color.r,
             g: color.g,
@@ -222,7 +221,6 @@ class Session {
                 newColor[key] = Math.min(Math.floor(newColor[key]*1.5), 255);
             }
         }
-        console.log(color, newColor);
         return newColor;
     }
 
