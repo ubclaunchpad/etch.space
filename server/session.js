@@ -218,7 +218,7 @@ class Session {
         }
         else {
             for(var key in newColor) {
-                newColor[key] = Math.min(Math.floor(newColor[key]*1.5), 255);
+                newColor[key] = Math.min(Math.floor(newColor[key]*2), 255);
             }
         }
         return newColor;
