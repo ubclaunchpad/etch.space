@@ -7,7 +7,7 @@ const logger = require('./logger');
 
 class Session {
     constructor(server) {
-        //process.on('uncaughtException', this.handleCrash.bind(this));
+        process.on('uncaughtException', this.handleCrash.bind(this));
 
         this.io = socketIO(server);
 
@@ -135,7 +135,7 @@ class Session {
 
     createUser(id) {
         const startingPos = this.getRandomPos();
-        const color = this.getLimitedRandomColor(0.2,0.8);
+        const color = this.getLimitedRandomColor(0.2, 0.8);
         const cursorColor = this.offsetColor(color);
 
         const user = {
@@ -179,8 +179,8 @@ class Session {
         return {
             r: Math.floor(Math.random() * 256),
             g: Math.floor(Math.random() * 256),
-            b: Math.floor(Math.random() * 256) 
-        }
+            b: Math.floor(Math.random() * 256)
+        };
     }
 
     getRandomColor() {
@@ -191,8 +191,8 @@ class Session {
     getLimitedRandomColor(minBrightness, maxBrightness) {
         do {
             var color = this.getRandomColorComponents();
-        } while(this.calcBrightness(color) > maxBrightness || this.calcBrightness(color) < minBrightness)
-        
+        } while (this.calcBrightness(color) > maxBrightness || this.calcBrightness(color) < minBrightness);
+
         return color;
     }
 
@@ -201,24 +201,23 @@ class Session {
     }
 
     calcBrightness(color) {
-        return (0.2126*color.r + 0.7152*color.g + 0.0722*color.b)/255;
+        return (0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b) / 255;
     }
 
     offsetColor(color) {
-        var brightness = this.calcBrightness(color);
-        var newColor = {
+        const brightness = this.calcBrightness(color);
+        const newColor = {
             r: color.r,
             g: color.g,
             b: color.b
         };
         if (brightness > 0.5) {
-            for(var key in newColor) {
-                newColor[key] = Math.min(Math.floor(newColor[key]*0.5), 255);
+            for (var key in newColor) {
+                newColor[key] = Math.min(Math.floor(newColor[key] * 0.5), 255);
             }
-        }
-        else {
-            for(var key in newColor) {
-                newColor[key] = Math.min(Math.floor(newColor[key]*2), 255);
+        } else {
+            for (var key in newColor) {
+                newColor[key] = Math.min(Math.floor(newColor[key] * 2), 255);
             }
         }
         return newColor;
@@ -253,7 +252,7 @@ class Session {
         this.recording = !this.recording;
     }
 
-    /*handleCrash(err) {
+    handleCrash(err) {
         logger.info('Unhandled Exception: ');
 
         logger.info('STATE: ');
@@ -275,7 +274,7 @@ class Session {
         // kinda hacky, but writing to the log is async
         // so we can't exit right away
         setTimeout(() => { process.exit(1); }, 2000);
-    }*/
+    }
 }
 
 module.exports = Session;
