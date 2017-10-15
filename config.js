@@ -10,7 +10,9 @@ module.exports = {
         BOARD_BEZEL_THICKNESS: 60,
         BOARD_BG_COLOR: '#eaeaea',
         PIXEL_SIZE: 3,
-        DEFAULT_USER_NICKNAME: 'anonymous',
+        NICKNAME_DEFAULT: 'anonymous',
+        NICKNAME_MAX_LEN: 25,
+        NICKNAME_MIN_LEN: 1,
         SPIN_FACTOR: 3
     }
 }

@@ -7,7 +7,7 @@ const logger = require('./logger');
 
 class Session {
     constructor(server) {
-        process.on('uncaughtException', this.handleCrash.bind(this));
+        // process.on('uncaughtException', this.handleCrash.bind(this));
 
         this.io = socketIO(server);
 
@@ -78,8 +78,13 @@ class Session {
     }
 
     handleNicknameEvent(id, nickname) {
+        // if length too high, ignore
+        if (nickname.length > config.GAME.NICKNAME_MAX_LEN || nickname.length < config.GAME.NICKNAME_MIN_LEN) {
+            return;
+        }
+
         // if user already has nickname, ignore it
-        if (this.users[id] && this.users[id].nick === config.GAME.DEFAULT_USER_NICKNAME) {
+        if (this.users[id] && this.users[id].nick === config.GAME.NICKNAME_DEFAULT) {
             const newUser = _.cloneDeep(this.users[id]);
             newUser.nick = nickname;
 
@@ -130,7 +135,9 @@ class Session {
             this.recorder.appendFrame(diffs);
         }
 
-        this.io.emit('tick', diffs);
+        if (diffs.length) {
+            this.io.emit('tick', diffs);
+        }
     }
 
     createUser(id) {
@@ -146,7 +153,7 @@ class Session {
                 x: startingPos.x,
                 y: startingPos.y
             },
-            nick: 'anonymous',
+            nick: config.GAME.NICKNAME_DEFAULT,
             connected: true
         };
 
@@ -252,29 +259,29 @@ class Session {
         this.recording = !this.recording;
     }
 
-    handleCrash(err) {
-        logger.info('Unhandled Exception: ');
+    // handleCrash(err) {
+    //     logger.info('Unhandled Exception: ');
 
-        logger.info('STATE: ');
+    //     logger.info('STATE: ');
 
-        logger.info('USERS: ');
-        logger.info(JSON.stringify(this.users));
+    //     logger.info('USERS: ');
+    //     logger.info(JSON.stringify(this.users));
 
-        logger.info('CHAT: ');
-        logger.info(JSON.stringify(this.chat));
+    //     logger.info('CHAT: ');
+    //     logger.info(JSON.stringify(this.chat));
 
-        logger.info('EVENTS: ');
-        logger.info(JSON.stringify(this.events));
+    //     logger.info('EVENTS: ');
+    //     logger.info(JSON.stringify(this.events));
 
-        logger.info('BOARD: ');
-        logger.info(JSON.stringify(this.board));
+    //     logger.info('BOARD: ');
+    //     logger.info(JSON.stringify(this.board));
 
-        logger.error(err.stack);
+    //     logger.error(err.stack);
 
-        // kinda hacky, but writing to the log is async
-        // so we can't exit right away
-        setTimeout(() => { process.exit(1); }, 2000);
-    }
+    //     // kinda hacky, but writing to the log is async
+    //     // so we can't exit right away
+    //     setTimeout(() => { process.exit(1); }, 2000);
+    // }
 }
 
 module.exports = Session;

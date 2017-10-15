@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Board from './Board';
 import UsersBox from './UsersBox';
+import Popup from './Popup';
 
 class App extends Component {
     constructor(props) {
@@ -15,7 +16,9 @@ class App extends Component {
             board: {},
             boardDiffs: [],
             chat: [],
-            users: {}
+            users: {},
+            popupOpen: true,
+            id: null
         };
     }
 
@@ -92,13 +95,29 @@ class App extends Component {
         });
     }
 
+    closePopup() {
+        this.setState({
+            popupOpen: false
+        });
+    }
+
     render() {
         if (!this.state.started) {
             return null;
         }
 
+        const userLoaded = !!this.state.users[this.state.id];
+
         return (
             <div className="page">
+                {this.state.popupOpen && userLoaded ?
+                    <Popup
+                        color={this.state.users[this.state.id].color}
+                        close={this.closePopup.bind(this)}
+                        socket={this.socket}
+                    />
+                    : null
+                }
                 <UsersBox
                     socket={this.socket}
                     users={this.state.users}
