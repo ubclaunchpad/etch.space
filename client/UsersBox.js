@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { Scrollbars } from 'react-custom-scrollbars';
+import config from '../config';
 
 class UsersBox extends Component {
     bindInputEvents(e) {
@@ -88,7 +89,7 @@ class UsersBox extends Component {
                     <input
                         placeholder="Type a message..."
                         type="text"
-                        maxlength="200"
+                        maxLength={config.CHAT.MESSAGE_MAX_LEN}
                         className="users-chat-input"
                         autoFocus
                         ref={this.bindInputEvents.bind(this)}

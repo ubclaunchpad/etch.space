@@ -32,20 +32,18 @@ class Popup extends Component {
                         }}
                     />
                 </div>
-                <div className="popup">
 
-                    <input
-                        ref={this.getInputRef.bind(this)}
-                        onKeyPress={this.handleSubmit.bind(this)}
-                        style={{
-                            color: this.props.color
-                        }}
-                        placeholder="Enter a nickname"
-                        type="text"
-                        className="popup-input"
-                        maxLength={config.GAME.NICKNAME_MAX_LEN}
-                    />
-                </div>
+                <input
+                    ref={this.getInputRef.bind(this)}
+                    onKeyPress={this.handleSubmit.bind(this)}
+                    style={{
+                        color: this.props.color
+                    }}
+                    placeholder="Enter a nickname"
+                    type="text"
+                    className="popup-input"
+                    maxLength={config.GAME.NICKNAME_MAX_LEN}
+                />
                 <div
                     className="popup-decline"
                     onClick={this.props.close}

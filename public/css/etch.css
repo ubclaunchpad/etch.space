@@ -209,19 +209,7 @@ body {
     justify-content: center;
 }
 
-.popup {
-    width: 700px;
-    height: 78px;
-    background: rgb(77, 77, 77);
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
 .popup-input {
-    flex: 1;
     font-size: 1.5em;
     text-align: center;
     font-weight: inherit;
@@ -229,6 +217,11 @@ body {
     border: none;
     outline: none;
     color: #e4e4e4;
+    width: 700px;
+    height: 78px;
+    background: rgb(77, 77, 77);
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
 .popup-decline {

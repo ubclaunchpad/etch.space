@@ -14,6 +14,9 @@ module.exports = {
         NICKNAME_MAX_LEN: 25,
         NICKNAME_MIN_LEN: 1,
         SPIN_FACTOR: 3
+    },
+    CHAT: {
+        MESSAGE_MAX_LEN: 200
     }
 }
 ;
