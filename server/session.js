@@ -69,6 +69,13 @@ class Session {
     handleChatEvent(id, content) {
         const stamp = new moment().unix();
 
+        let stringlimit = 200;
+
+        if(content.length > stringlimit){
+          content = content.substring(0,stringlimit).concat("...");
+
+        }
+
         this.events.push({
             type: 'chat',
             id,

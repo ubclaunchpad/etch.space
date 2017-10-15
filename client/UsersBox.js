@@ -88,6 +88,7 @@ class UsersBox extends Component {
                     <input
                         placeholder="Type a message..."
                         type="text"
+                        maxlength="200"
                         className="users-chat-input"
                         autoFocus
                         ref={this.bindInputEvents.bind(this)}
