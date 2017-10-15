@@ -78,8 +78,13 @@ class Session {
     }
 
     handleNicknameEvent(id, nickname) {
+        // if length too high, ignore
+        if (nickname.length > config.GAME.NICKNAME_MAX_LEN || nickname.length < config.GAME.NICKNAME_MIN_LEN) {
+            return;
+        }
+
         // if user already has nickname, ignore it
-        if (this.users[id] && this.users[id].nick === config.GAME.DEFAULT_USER_NICKNAME) {
+        if (this.users[id] && this.users[id].nick === config.GAME.NICKNAME_DEFAULT) {
             const newUser = _.cloneDeep(this.users[id]);
             newUser.nick = nickname;
 
@@ -129,7 +134,9 @@ class Session {
             this.recorder.appendFrame(diffs);
         }
 
-        this.io.emit('tick', diffs);
+        if (diffs.length) {
+            this.io.emit('tick', diffs);
+        }
     }
 
     createUser(id) {
@@ -143,7 +150,7 @@ class Session {
                 x: startingPos.x,
                 y: startingPos.y
             },
-            nick: 'anonymous',
+            nick: config.GAME.NICKNAME_DEFAULT,
             connected: true
         };
 

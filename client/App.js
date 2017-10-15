@@ -17,7 +17,8 @@ class App extends Component {
             boardDiffs: [],
             chat: [],
             users: {},
-            popupOpen: true
+            popupOpen: true,
+            id: null
         };
     }
 
@@ -94,17 +95,26 @@ class App extends Component {
         });
     }
 
+    closePopup() {
+        this.setState({
+            popupOpen: false
+        });
+    }
+
     render() {
         if (!this.state.started) {
             return null;
         }
 
+        const userLoaded = !!this.state.users[this.state.id];
+
         return (
             <div className="page">
-                {this.id && this.state.popupOpen ?
+                {this.state.popupOpen && userLoaded ?
                     <Popup
-                        users={this.state.users}
-                        id={this.id}
+                        color={this.state.users[this.state.id].color}
+                        close={this.closePopup.bind(this)}
+                        socket={this.socket}
                     />
                     : null
                 }
