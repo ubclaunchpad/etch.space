@@ -83,12 +83,12 @@ class Session {
 
     handleNicknameEvent(id, nickname) {
         // if length too high, ignore
-        if (nickname.length > config.GAME.NICKNAME_MAX_LEN || nickname.length < config.GAME.NICKNAME_MIN_LEN) {
+        if (nickname.length > config.NICKNAME.MAX_LEN || nickname.length < config.NICKNAME.MIN_LEN) {
             return;
         }
 
         // if user already has nickname, ignore it
-        if (this.users[id] && this.users[id].nick === config.GAME.NICKNAME_DEFAULT) {
+        if (this.users[id] && this.users[id].nick === config.NICKNAME.DEFAULT) {
             const newUser = _.cloneDeep(this.users[id]);
             newUser.nick = nickname;
 
@@ -103,12 +103,12 @@ class Session {
 
         if (Math.abs(move.x) === 0 || Math.abs(move.x) === 1) {
             user.nextPos.x = user.pos.x + move.x;
-            user.nextPos.x = Math.max(0, Math.min(user.nextPos.x, config.GAME.BOARD_WIDTH - 1));
+            user.nextPos.x = Math.max(0, Math.min(user.nextPos.x, config.BOARD.WIDTH - 1));
         }
 
         if (Math.abs(move.y) === 0 || Math.abs(move.y) === 1) {
             user.nextPos.y = user.pos.y + move.y;
-            user.nextPos.y = Math.max(0, Math.min(user.nextPos.y, config.GAME.BOARD_HEIGHT - 1));
+            user.nextPos.y = Math.max(0, Math.min(user.nextPos.y, config.BOARD.HEIGHT - 1));
         }
     }
 
@@ -157,7 +157,7 @@ class Session {
                 x: startingPos.x,
                 y: startingPos.y
             },
-            nick: config.GAME.NICKNAME_DEFAULT,
+            nick: config.NICKNAME.DEFAULT,
             connected: true
         };
 
@@ -236,8 +236,8 @@ class Session {
 
     getRandomPos() {
         return {
-            x: parseInt(Math.random() * (config.GAME.BOARD_WIDTH - config.GAME.PIXEL_SIZE)),
-            y: parseInt(Math.random() * (config.GAME.BOARD_HEIGHT - config.GAME.PIXEL_SIZE))
+            x: parseInt(Math.random() * (config.BOARD.WIDTH - config.GAME.PIXEL_SIZE)),
+            y: parseInt(Math.random() * (config.BOARD.HEIGHT - config.GAME.PIXEL_SIZE))
         };
     }
 

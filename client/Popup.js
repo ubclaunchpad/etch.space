@@ -5,7 +5,7 @@ class Popup extends Component {
     handleSubmit(event) {
         if (event.key === 'Enter') {
             const value = this.input.value;
-            if (value.length > config.GAME.NICKNAME_MIN_LEN) {
+            if (value.length > config.NICKNAME.MIN_LEN) {
                 this.props.socket.emit('nickname', this.input.value);
                 this.props.close();
             }
@@ -42,7 +42,7 @@ class Popup extends Component {
                     placeholder="Enter a nickname"
                     type="text"
                     className="popup-input"
-                    maxLength={config.GAME.NICKNAME_MAX_LEN}
+                    maxLength={config.NICKNAME.MAX_LEN}
                 />
                 <div
                     className="popup-decline"

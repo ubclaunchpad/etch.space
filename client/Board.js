@@ -111,21 +111,21 @@ class Board extends Component {
             <div
                 className="housing"
                 style={{
-                    width: config.GAME.BOARD_BEZEL_THICKNESS * 2 + config.GAME.BOARD_WIDTH * config.GAME.PIXEL_SIZE,
-                    height: config.GAME.BOARD_BEZEL_THICKNESS * 2 + config.GAME.BOARD_HEIGHT * config.GAME.PIXEL_SIZE
+                    width: config.BOARD.BEZEL_THICKNESS * 2 + config.BOARD.WIDTH * config.GAME.PIXEL_SIZE,
+                    height: config.BOARD.BEZEL_THICKNESS * 2 + config.BOARD.HEIGHT * config.GAME.PIXEL_SIZE
                 }}
             >
                 <div className="wrapper">
                     <canvas
                         className="sketch"
                         style={{
-                            background: config.GAME.BOARD_BG_COLOR,
-                            width: config.GAME.BOARD_WIDTH * config.GAME.PIXEL_SIZE,
-                            height: config.GAME.BOARD_HEIGHT * config.GAME.PIXEL_SIZE
+                            background: config.BOARD.BG_COLOR,
+                            width: config.BOARD.WIDTH * config.GAME.PIXEL_SIZE,
+                            height: config.BOARD.HEIGHT * config.GAME.PIXEL_SIZE
                         }}
                         ref={this.getCanvasRef.bind(this)}
-                        width={config.GAME.BOARD_WIDTH}
-                        height={config.GAME.BOARD_HEIGHT}
+                        width={config.BOARD.WIDTH}
+                        height={config.BOARD.HEIGHT}
                     >
                     </canvas>
                 </div>

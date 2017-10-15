@@ -152,7 +152,7 @@ body {
     margin: 0 auto;
     position: relative;
     border: 8px solid white;
-    border-radius: 25px;
+    border-radius: 15px;
     image-rendering: pixelated;
     box-sizing: content-box;
 }
