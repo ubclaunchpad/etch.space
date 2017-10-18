@@ -8,6 +8,7 @@ class UsersBox extends Component {
         this.scrollbar.scrollToBottom();
     }
 
+
     bindInputEvents(e) {
         // store reference to input element
         if (e) {
