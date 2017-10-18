@@ -4,6 +4,10 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import config from '../config';
 
 class UsersBox extends Component {
+    componentDidMount() {
+        this.scrollbar.scrollToBottom();
+    }
+
     bindInputEvents(e) {
         // store reference to input element
         if (e) {
@@ -28,7 +32,6 @@ class UsersBox extends Component {
     getScrollbarRef(e) {
         if (e) {
             this.scrollbar = e;
-            e.scrollToBottom();
         }
     }
 
@@ -70,8 +73,11 @@ class UsersBox extends Component {
                         autoHideDuration={200}
                     >
                         <div className="chat">
-                            {this.props.chat.map(event => (
-                                <p className="chat-message">
+                            {this.props.chat.map((event, i) => (
+                                <p
+                                    className="chat-message"
+                                    key={i}
+                                >
                                     <span className="chat-stamp">{moment.unix(event.stamp).format('h:mm')}</span>
                                     <span
                                         className="chat-nick"
