@@ -15,9 +15,9 @@ class Board extends Component {
 
         this.state = {
             pos: {
-                x: null,
-                y: null,
-                color: null
+                x: this.props.user.pos.x,
+                y: this.props.user.pos.y,
+                color: this.props.user.color
             }
         };
     }
@@ -30,7 +30,7 @@ class Board extends Component {
     componentWillReceiveProps(nextProps) {
         // draw onto canvas everytime theres changes
         if (nextProps.diffs !== this.props.diffs) {
-            this.drawDiffs();
+            this.drawDiffs(nextProps.diffs);
         }
     }
 
@@ -50,13 +50,13 @@ class Board extends Component {
         };
     }
 
-    drawDiffs() {
-        this.props.diffs.forEach(function (diff) {
+    drawDiffs(diffs) {
+        diffs.forEach(function (diff) {
             // look for our id in the list of diffs
             // update out current position
             // draw black pixel on current pos
             if (diff.id === this.props.id) {
-                this.updatePos(diff.x, diff.y, diff.color, diff.cursorColor);
+                this.updatePos(diff.x, diff.y, diff.color, this.props.user.cursorColor);
             } else {
                 this.drawPixel(diff.x, diff.y, diff.color);
             }

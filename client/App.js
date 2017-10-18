@@ -53,7 +53,6 @@ class App extends Component {
         });
     }
 
-
     handleTick(diffs) {
         const board = this.state.board;
 
@@ -102,17 +101,19 @@ class App extends Component {
     }
 
     render() {
-        if (!this.state.started) {
+        const userLoaded = !!this.state.users[this.state.id];
+
+        if (!this.state.started || !userLoaded) {
             return null;
         }
 
-        const userLoaded = !!this.state.users[this.state.id];
+        const user = this.state.users[this.state.id];
 
         return (
             <div className="page">
-                {this.state.popupOpen && userLoaded ?
+                {this.state.popupOpen ?
                     <Popup
-                        color={this.state.users[this.state.id].color}
+                        color={user.color}
                         close={this.closePopup.bind(this)}
                         socket={this.socket}
                     />
@@ -127,7 +128,7 @@ class App extends Component {
                     <Board
                         socket={this.socket}
                         id={this.state.id}
-                        users={this.state.users}
+                        user={user}
                         board={this.state.board}
                         diffs={this.state.boardDiffs}
                     />
