@@ -35,7 +35,7 @@ body {
     display: flex;
     flex-flow: column;
     flex: 1;
-    padding: 20px 0px; 
+    padding: 20px 0px;
 }
 
 .title {
@@ -250,4 +250,17 @@ body {
 .popup-your-color {
     width: 15px;
     height: 15px;
+}
+
+.created-at {
+    display: flex;
+    justify-content: center;
+    font-weight: 200;
+    color: grey;
+    font-size: 0.9em;
+}
+
+.created-at-link {
+    color: #cf4748;
+    margin-left: 5px;
 }

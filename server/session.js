@@ -124,7 +124,6 @@ class Session {
                     x: user.nextPos.x,
                     y: user.nextPos.y,
                     color: user.color,
-                    cursorColor: user.cursorColor,
                     id
                 });
 
