@@ -133,6 +133,16 @@ class App extends Component {
                     />
                     <div className="title"
                     >move with arrow keys ←↑→↓</div>
+                    {/* <div
+                        className="created-at"
+                    >
+                    created at
+                        <a
+                            href="http://www.ubclaunchpad.com/"
+                            className="created-at-link"
+                        >ubclaunchpad
+                        </a>
+                    </div> */}
                 </div>
             </div>
         );
