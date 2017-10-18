@@ -153,6 +153,7 @@ body {
     position: relative;
     border: 8px solid white;
     border-radius: 15px;
+    image-rendering: -moz-crisp-edges;
     image-rendering: pixelated;
     box-sizing: content-box;
 }
