@@ -23,6 +23,9 @@ class App extends Component {
     }
 
     componentDidMount() {
+
+        document.title = "etch"
+
         this.socket.on('connect', this.handleConnect.bind(this));
         this.bindSocketEvents(this.socket);
 
