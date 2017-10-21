@@ -1,0 +1,8 @@
+{
+    "INPUT_HEIGHT": 150,
+    "INPUT_WIDTH": 250,
+    "BG_COLOR": "#eaeaea",
+    "SCALE": 2,
+    "INPUT_FPS": 10,
+    "OUTPUT_FPS": 40
+}

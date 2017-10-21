@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-    <script src = "js/client.js"></script>
-    <link rel="stylesheet" href="css/etch.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108037794-1"></script>
     <script>
-        var INITIAL_BOARD = <%- JSON.stringify(boardState) %>;
+    if (document.location.hostname === "198.199.106.166") {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-108037794-1');
+    }
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,400i,500" rel="stylesheet">
+    <link rel="stylesheet" href="css/etch.css">
+    <link rel="icon" 
+      href="favicon.ico?v=3">
 </head>
 <body>
-    <div id="housing">
-        <div id="wrapper">
-            <canvas id="sketch" width="700" height="400">
-            </canvas>
-        </div>
-        <div class="knob" id="left"></div>
-        <div class="knob" id="right"></div>
-    </div>
+    <div id="app"><div>
+    <script src = "js/bundle.js"></script>
 </body>
