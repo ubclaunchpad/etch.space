@@ -1,2 +1,12 @@
 node_modules
-.DS_Store
+*.DS_Store
+public/js/bundle.js
+server/recordings
+server/gif/tmp
+*.gif
+*.sketch
+*.pyc
+*.log
+*.rec
+*.svg
+.vscode/tags
