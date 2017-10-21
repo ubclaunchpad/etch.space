@@ -128,6 +128,16 @@ class App extends Component {
                     chat={this.state.chat}
                 />
                 <div className="page-center">
+                    <div className="top-bar">
+                        <div className="created-at">
+                    created at
+                            <a
+                                href="http://www.ubclaunchpad.com/"
+                                className="created-at-link"
+                            >ubclaunchpad
+                            </a>
+                        </div>
+                    </div>
                     <Board
                         socket={this.socket}
                         id={this.state.id}

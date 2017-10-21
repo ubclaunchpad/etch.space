@@ -35,7 +35,7 @@ body {
     display: flex;
     flex-flow: column;
     flex: 1;
-    padding: 20px 0px;
+    padding-bottom: 20px;
 }
 
 .title {
@@ -258,9 +258,18 @@ body {
     font-weight: 200;
     color: grey;
     font-size: 0.9em;
+    margin-right: 5px;
 }
 
 .created-at-link {
     color: #cf4748;
     margin-left: 5px;
+}
+
+.top-bar {
+    background: #282828;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 25px;
 }
