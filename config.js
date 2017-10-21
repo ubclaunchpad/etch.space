@@ -1,6 +1,9 @@
-module.exports = {
+const devConfig = require('./dev.config');
+const _ = require('lodash');
+
+let config = {
     SERVER: {
-        PORT: 3000
+        PORT: 3000,
     },
     GAME: {
         UPDATE_RATE: 50,
@@ -23,4 +26,10 @@ module.exports = {
         MESSAGE_MAX_LEN: 200
     }
 }
-;
+    ;
+
+if (process.env.NODE_ENV === 'development') {
+    config = _.merge(config, devConfig);
+}
+
+module.exports = config;
