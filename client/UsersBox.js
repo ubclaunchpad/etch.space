@@ -4,8 +4,24 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import config from '../config';
 
 class UsersBox extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            scrolledToBottom: true
+        }
+
+    }
+
     componentDidMount() {
         this.scrollbar.scrollToBottom();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.scrollbar && this.state.scrolledToBottom) {
+            this.scrollbar.scrollToBottom(); 
+        }
     }
 
     bindInputEvents(e) {
@@ -33,6 +49,20 @@ class UsersBox extends Component {
         if (e) {
             this.scrollbar = e;
         }
+    }
+
+    handleScroll(values) {
+        if (values.top === 1) {
+            this.setState({
+                scrolledToBottom: true
+            })
+        }
+        else {
+            this.setState({
+                scrolledToBottom: false
+            })
+        }
+
     }
 
     render() {
@@ -64,6 +94,7 @@ class UsersBox extends Component {
                 </div>
                 <div className="chat-box">
                     <Scrollbars
+                        onScrollFrame={this.handleScroll.bind(this)}    
                         ref={this.getScrollbarRef.bind(this)}
                         style={{
                             flex: 1
