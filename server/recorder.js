@@ -12,7 +12,7 @@ class Recorder {
 
         this.frames = 0;
 
-        this.encoder = new GIFEncoder(320, 240);
+        this.encoder = new GIFEncoder(config.BOARD.WIDTH, config.BOARD.HEIGHT);
 
         const DIR = `${__dirname}/rec`;
         const EXT = '.rec';
@@ -38,10 +38,21 @@ class Recorder {
         // use node-canvas 
         this.canvas = new Canvas(config.BOARD.WIDTH, config.BOARD.HEIGHT);
         this.ctx = this.canvas.getContext('2d'); 
+        this.ctx.fillStyle = "white";
+        this.ctx.fillRect(0,0, config.BOARD.WIDTH, config.BOARD.HEIGHT);
     }
 
     finishGifCapture() {
         this.encoder.finish();
+        var out = fs.createWriteStream(__dirname + '/text.png'), stream = this.canvas.pngStream();
+      
+        stream.on('data', function(chunk){
+            out.write(chunk);
+         } );
+      
+        stream.on('end', function(){
+            console.log('saved png');
+         });
     }
 
     appendFrame(board) {
