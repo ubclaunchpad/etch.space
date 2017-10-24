@@ -10,9 +10,11 @@
     "clear-rec": "rm -rf ./server/rec/*"
   },
   "dependencies": {
+    "canvas": "^1.6.7",
     "cookie-parser": "^1.4.3",
     "ejs": "^2.5.7",
     "express": "^4.15.4",
+    "gifencoder": "^1.1.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "react": "^16.0.0",

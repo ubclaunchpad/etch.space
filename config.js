@@ -17,6 +17,11 @@ let config = {
         BEZEL_THICKNESS: 40,
         BG_COLOR: '#eaeaea'
     },
+    RECORDING: {
+        REPEAT: 0, //0 == true, -1 == false
+        QUALITY: 10,
+        DELAY: 5
+    },
     NICKNAME: {
         DEFAULT: 'anonymous',
         MAX_LEN: 25,

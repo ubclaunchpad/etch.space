@@ -256,6 +256,7 @@ class Session {
         if (!this.recorder) {
             this.recorder = new Recorder();
         } else {
+            this.recorder.finishGifCapture();
             this.recorder = null;
         }
 
