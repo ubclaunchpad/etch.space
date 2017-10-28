@@ -4,5 +4,6 @@
     "BG_COLOR": "#eaeaea",
     "SCALE": 2,
     "INPUT_FPS": 10,
-    "OUTPUT_FPS": 40
+    "OUTPUT_FPS": 40,
+    "SAMPLE_RATE": 10
 }

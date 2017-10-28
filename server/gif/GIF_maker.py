@@ -55,11 +55,17 @@ class GIF_maker:
 
         i = 0
         for diffs in self.frame_data:
+
+            if (len(diffs) == 0):
+                continue
+
             self.__draw_next_image(diffs)
 
-            output_frame = self.current_frame.copy()
-            output_frame = output_frame.resize(output_dim, Image.NEAREST)
-            output_frame.save('./tmp/' + str(i) + '.png')
+            if (i % self.config['SAMPLE_RATE'] == 0):
+                output_frame = self.current_frame.copy()
+                output_frame = output_frame.resize(output_dim, Image.NEAREST)
+                output_frame.save('./tmp/' + str(i) + '.png')
+
             i = i + 1
 
     def __draw_next_image(self, diffs):
