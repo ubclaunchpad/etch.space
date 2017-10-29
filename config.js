@@ -29,15 +29,13 @@ let config = {
         HOSTNAME: 'localhost',
         NAME: 'etch',
         USERNAME: 'etch',
-        PASSWORD: 'etch',
-        TABLES: {
-            USERS: 'users'
-        }
+        PASSWORD: 'etch'
     }
 }
     ;
 
 if (process.env.NODE_ENV === 'development') {
+    // devConfig overrides regular config
     config = _.merge(config, devConfig);
 }
 

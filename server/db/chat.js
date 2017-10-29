@@ -11,6 +11,12 @@ class Chat {
             },
             stamp: {
                 type: Sequelize.INTEGER
+            },
+            nick: {
+                type: Sequelize.STRING
+            },
+            color: {
+                type: Sequelize.STRING
             }
         });
     }

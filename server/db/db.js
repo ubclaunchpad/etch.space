@@ -21,7 +21,6 @@ class DB {
         });
 
         this.models = {
-            user: new User(this.conn),
             chat: new Chat(this.conn),
             board: new Board(this.conn)
         };
@@ -49,16 +48,14 @@ class DB {
         const state = {};
 
         const statePromises = [
-            this.models.user.getAll(),
             this.models.chat.getAll(),
             this.models.board.get()
         ];
 
         return Promise.all(statePromises)
             .then((data) => {
-                state.users = data[0];
-                state.chat = data[1];
-                state.board = data[2];
+                state.chat = data[0];
+                state.board = data[1];
                 return state;
             });
     }

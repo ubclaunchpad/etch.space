@@ -46,7 +46,9 @@ class Board {
             y: diff.y
         }));
 
-        return this.model.bulkCreate(pixels);
+        return Promise.all(
+            pixels.map(pixel => this.model.upsert(pixel))
+        );
     }
 }
 

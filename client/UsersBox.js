@@ -108,9 +108,9 @@ class UsersBox extends Component {
                                     <span className="chat-stamp">{moment.unix(event.stamp).format('h:mm')}</span>
                                     <span
                                         className="chat-nick"
-                                        style={{ color: this.props.users[event.userId].color }}
+                                        style={{ color: event.color }}
                                     >
-                                        {`${this.props.users[event.userId].nick}: `}
+                                        {`${event.nick}: `}
                                     </span>
                                     {event.content}
                                 </p>

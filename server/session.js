@@ -28,7 +28,6 @@ class Session {
     }
 
     loadInitialState(state) {
-        this.users = state.users;
         this.chat = state.chat;
         this.board = state.board;
     }
@@ -82,7 +81,9 @@ class Session {
         const message = {
             userId: id,
             content,
-            stamp
+            stamp,
+            nick: this.users[id].nick,
+            color: this.users[id].color
         };
 
         this.DB.models.chat.create(message)
@@ -91,7 +92,9 @@ class Session {
                     type: 'chat',
                     userId: id,
                     content,
-                    stamp
+                    stamp,
+                    nick: this.users[id].nick,
+                    color: this.users[id].color
                 });
             });
     }
@@ -102,13 +105,10 @@ class Session {
             return;
         }
 
-        this.DB.models.user.updateNick(id, nickname)
-            .then(() => {
-                const newUser = _.cloneDeep(this.users[id]);
-                newUser.nick = nickname;
+        const newUser = _.cloneDeep(this.users[id]);
+        newUser.nick = nickname;
 
-                this.createUserEvent(id, newUser);
-            });
+        this.createUserEvent(id, newUser);
     }
 
     handleMoveEvent(id, move) {
@@ -177,14 +177,12 @@ class Session {
             connected: true
         };
 
-        this.DB.models.user.create(user).then(() => {
-            this.createUserEvent(id, user);
+        this.createUserEvent(id, user);
 
-            this.updatePixel({
-                x: startingPos.x,
-                y: startingPos.y,
-                color: this.colorToRGB(color)
-            });
+        this.updatePixel({
+            x: startingPos.x,
+            y: startingPos.y,
+            color: this.colorToRGB(color)
         });
     }
 
