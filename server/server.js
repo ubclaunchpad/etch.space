@@ -1,7 +1,13 @@
 const express = require('express');
 
+const fs = require('fs');
+const options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem'),
+};
+
 const app = express();
-const server = require('http').Server(app);
+const server = require('https').createServer(options, app);
 const config = require('../config');
 const Session = require('./session');
 const cookieParser = require('cookie-parser');
