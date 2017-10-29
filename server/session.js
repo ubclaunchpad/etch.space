@@ -30,6 +30,7 @@ class Session {
     loadInitialState(state) {
         this.users = state.users;
         this.chat = state.chat;
+        this.board = state.board;
     }
 
     bindSocketEvents(socket) {
@@ -146,6 +147,7 @@ class Session {
             }
         });
 
+
         this.updateBoard(diffs);
 
         if (this.recording) {
@@ -153,6 +155,7 @@ class Session {
         }
 
         if (diffs.length) {
+            this.DB.models.board.update(this.board);
             this.io.emit('tick', diffs);
         }
     }

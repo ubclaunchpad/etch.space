@@ -4,6 +4,7 @@ const logger = require('../logger');
 
 const User = require('./user');
 const Chat = require('./chat');
+const Board = require('./board');
 
 class DB {
     constructor() {
@@ -21,7 +22,8 @@ class DB {
 
         this.models = {
             user: new User(this.conn),
-            chat: new Chat(this.conn)
+            chat: new Chat(this.conn),
+            board: new Board(this.conn)
         };
     }
 
@@ -48,13 +50,15 @@ class DB {
 
         const statePromises = [
             this.models.user.getAll(),
-            this.models.chat.getAll()
+            this.models.chat.getAll(),
+            this.models.board.get()
         ];
 
         return Promise.all(statePromises)
             .then((data) => {
                 state.users = data[0];
                 state.chat = data[1];
+                state.board = data[2];
                 return state;
             });
     }
