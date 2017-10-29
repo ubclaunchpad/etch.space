@@ -4,14 +4,12 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import config from '../config';
 
 class UsersBox extends Component {
-
     constructor(props) {
         super(props);
 
         this.state = {
             scrolledToBottom: true
-        }
-
+        };
     }
 
     componentDidMount() {
@@ -20,7 +18,7 @@ class UsersBox extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.scrollbar && this.state.scrolledToBottom) {
-            this.scrollbar.scrollToBottom(); 
+            this.scrollbar.scrollToBottom();
         }
     }
 
@@ -55,14 +53,12 @@ class UsersBox extends Component {
         if (values.top === 1) {
             this.setState({
                 scrolledToBottom: true
-            })
-        }
-        else {
+            });
+        } else {
             this.setState({
                 scrolledToBottom: false
-            })
+            });
         }
-
     }
 
     render() {
@@ -94,7 +90,7 @@ class UsersBox extends Component {
                 </div>
                 <div className="chat-box">
                     <Scrollbars
-                        onScrollFrame={this.handleScroll.bind(this)}    
+                        onScrollFrame={this.handleScroll.bind(this)}
                         ref={this.getScrollbarRef.bind(this)}
                         style={{
                             flex: 1
@@ -112,9 +108,9 @@ class UsersBox extends Component {
                                     <span className="chat-stamp">{moment.unix(event.stamp).format('h:mm')}</span>
                                     <span
                                         className="chat-nick"
-                                        style={{ color: this.props.users[event.id].color }}
+                                        style={{ color: this.props.users[event.userId].color }}
                                     >
-                                        {`${this.props.users[event.id].nick}: `}
+                                        {`${this.props.users[event.userId].nick}: `}
                                     </span>
                                     {event.content}
                                 </p>

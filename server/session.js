@@ -29,6 +29,7 @@ class Session {
 
     loadInitialState(state) {
         this.users = state.users;
+        this.chat = state.chat;
     }
 
     bindSocketEvents(socket) {
@@ -77,12 +78,21 @@ class Session {
 
         const stamp = new moment().unix();
 
-        this.events.push({
-            type: 'chat',
-            id,
+        const message = {
+            userId: id,
             content,
             stamp
-        });
+        };
+
+        this.DB.models.chat.create(message)
+            .then(() => {
+                this.events.push({
+                    type: 'chat',
+                    userId: id,
+                    content,
+                    stamp
+                });
+            });
     }
 
     handleNicknameEvent(id, nickname) {

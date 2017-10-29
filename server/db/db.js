@@ -3,6 +3,7 @@ const config = require('../../config');
 const logger = require('../logger');
 
 const User = require('./user');
+const Chat = require('./chat');
 
 class DB {
     constructor() {
@@ -17,6 +18,11 @@ class DB {
             },
             logging: true
         });
+
+        this.models = {
+            user: new User(this.conn),
+            chat: new Chat(this.conn)
+        };
     }
 
     connect() {
@@ -25,18 +31,11 @@ class DB {
             .then(() => {
                 logger.info('DB Connection established successfully.');
 
-                // get models
-                this.models = {
-                    user: new User(this.conn)
-                };
-
                 // sync models with DB (create tables automatically)
                 logger.info('Syncing models with DB...');
                 return Promise.all(
                     Object.values(this.models).map(model => model.sync())
                 );
-
-            // sync models
             })
             .catch((err) => {
                 logger.error(err);
@@ -45,12 +44,18 @@ class DB {
 
     getInitialState() {
         logger.info('Getting initial state from DB...');
-        const data = {};
+        const state = {};
 
-        return this.models.user.getAll()
-            .then((users) => {
-                data.users = users;
-                return data;
+        const statePromises = [
+            this.models.user.getAll(),
+            this.models.chat.getAll()
+        ];
+
+        return Promise.all(statePromises)
+            .then((data) => {
+                state.users = data[0];
+                state.chat = data[1];
+                return state;
             });
     }
 }

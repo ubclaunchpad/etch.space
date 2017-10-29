@@ -38,7 +38,14 @@ class User {
 
     getAll() {
         return this.model.findAll()
-            .then(users => users.map(user => user.get({ plain: true })));
+            .then(users =>
+                // get plain json, return obj rather than array
+                users.map(user => user.get({ plain: true }))
+                    .reduce((usersMap, user) => {
+                        usersMap[user.id] = user;
+                        return usersMap;
+                    }, {})
+            );
     }
 
     updateNick(id, nick) {
