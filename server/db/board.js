@@ -2,13 +2,17 @@ const Sequelize = require('sequelize');
 
 class Board {
     constructor(DB) {
-        this.model = DB.define('board', {
-            id: {
-                type: Sequelize.STRING,
-                primaryKey: true
+        this.model = DB.define('board_pixel', {
+            x: {
+                type: Sequelize.INTEGER,
+                unique: 'compositeIndex'
             },
-            board: {
-                type: Sequelize.JSON
+            y: {
+                type: Sequelize.INTEGER,
+                unique: 'compositeIndex'
+            },
+            color: {
+                type: Sequelize.STRING
             }
         });
     }
@@ -18,22 +22,31 @@ class Board {
     }
 
     get() {
-        return this.model.find({
-            where: {
-                id: 'board'
-            }
-        }).then(board => board.get({ plain: true }).board);
+        return this.model.findAll()
+            .then(pixels => pixels.map(pixel => pixel.get({ plain: true })))
+            .then((pixels) => {
+                const board = {};
+
+                pixels.forEach((pixel) => {
+                    if (!board[pixel.x]) {
+                        board[pixel.x] = {};
+                    }
+
+                    board[pixel.x][pixel.y] = pixel.color;
+                });
+
+                return board;
+            });
     }
 
-    update(board) {
-        return this.model.upsert({
-            id: 'board',
-            board
-        },
-        {
-            id: 'board'
-        }
-        ).catch(err => console.log(err.stack));
+    update(diffs) {
+        const pixels = diffs.map(diff => ({
+            color: diff.color,
+            x: diff.x,
+            y: diff.y
+        }));
+
+        return this.model.bulkCreate(pixels);
     }
 }
 

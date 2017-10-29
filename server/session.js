@@ -147,7 +147,6 @@ class Session {
             }
         });
 
-
         this.updateBoard(diffs);
 
         if (this.recording) {
@@ -155,7 +154,7 @@ class Session {
         }
 
         if (diffs.length) {
-            this.DB.models.board.update(this.board);
+            this.DB.models.board.update(diffs);
             this.io.emit('tick', diffs);
         }
     }
