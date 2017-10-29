@@ -3,7 +3,7 @@ const _ = require('lodash');
 
 let config = {
     SERVER: {
-        PORT: 3000,
+        PORT: 3000
     },
     GAME: {
         UPDATE_RATE: 50,
@@ -24,6 +24,15 @@ let config = {
     },
     CHAT: {
         MESSAGE_MAX_LEN: 200
+    },
+    DB: {
+        HOSTNAME: 'localhost',
+        NAME: 'etch',
+        USERNAME: 'etch',
+        PASSWORD: 'etch',
+        TABLES: {
+            USERS: 'users'
+        }
     }
 }
     ;

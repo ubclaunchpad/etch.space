@@ -1,5 +1,11 @@
 module.exports = {
     SERVER: {
-        PORT: 3001
+        PORT: 3002
+    },
+    DB: {
+        TABLES: {
+            USERS: 'dev-users'
+        }
     }
 }
+;

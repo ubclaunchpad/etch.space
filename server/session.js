@@ -6,9 +6,10 @@ const Recorder = require('./recorder');
 const logger = require('./logger');
 
 class Session {
-    constructor(server) {
+    constructor(server, dbConn) {
         // process.on('uncaughtException', this.handleCrash.bind(this));
 
+        this.DB = dbConn;
         this.io = socketIO(server);
 
         this.users = {};
@@ -26,6 +27,10 @@ class Session {
         this.io.on('connection', this.bindSocketEvents.bind(this));
     }
 
+    loadInitialState(state) {
+        this.users = state.users;
+    }
+
     bindSocketEvents(socket) {
         const id = socket.id;
 
@@ -37,7 +42,6 @@ class Session {
         socket.on('nickname', this.handleNicknameEvent.bind(this, id));
         socket.on('disconnect', this.disconnectUser.bind(this, id));
     }
-
 
     start() {
         setInterval(this.tick.bind(this), config.GAME.UPDATE_RATE);
@@ -87,13 +91,13 @@ class Session {
             return;
         }
 
-        // if user already has nickname, ignore it
-        if (this.users[id] && this.users[id].nick === config.NICKNAME.DEFAULT) {
-            const newUser = _.cloneDeep(this.users[id]);
-            newUser.nick = nickname;
+        this.DB.models.user.updateNick(id, nickname)
+            .then(() => {
+                const newUser = _.cloneDeep(this.users[id]);
+                newUser.nick = nickname;
 
-            this.createUserEvent(id, newUser);
-        }
+                this.createUserEvent(id, newUser);
+            });
     }
 
     handleMoveEvent(id, move) {
@@ -149,6 +153,7 @@ class Session {
         const cursorColor = this.offsetColor(color);
 
         const user = {
+            id,
             color: this.colorToRGB(color),
             cursorColor: this.colorToRGB(cursorColor),
             pos: startingPos,
@@ -160,12 +165,14 @@ class Session {
             connected: true
         };
 
-        this.createUserEvent(id, user);
+        this.DB.models.user.create(user).then(() => {
+            this.createUserEvent(id, user);
 
-        this.updatePixel({
-            x: startingPos.x,
-            y: startingPos.y,
-            color: this.colorToRGB(color)
+            this.updatePixel({
+                x: startingPos.x,
+                y: startingPos.y,
+                color: this.colorToRGB(color)
+            });
         });
     }
 

@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const server = require('http').Server(app);
 const config = require('../config');
+const DB = require('./db/db');
 const Session = require('./session');
 const cookieParser = require('cookie-parser');
 const logger = require('./logger');
@@ -12,8 +13,11 @@ app.set('views', 'public');
 app.use(cookieParser());
 app.use(express.static('public'));
 
-const session = new Session(server);
-session.start();
+// connect to DB
+
+const dbConn = new DB();
+
+const session = new Session(server, dbConn);
 
 app.get('/', (req, res) => {
     if (req.cookies && req.cookies.io) {
@@ -53,6 +57,16 @@ app.use((err, req, res, next) => {
     res.status(500).send('Internal Error');
 });
 
-server.listen(config.SERVER.PORT, () => {
-    logger.info(`listening on *:${config.SERVER.PORT}`);
-});
+dbConn.connect()
+    .then(() => dbConn.getInitialState())
+    .then((initialState) => {
+        session.loadInitialState(initialState);
+        session.start();
+
+        server.listen(config.SERVER.PORT, () => {
+            logger.info(`listening on *:${config.SERVER.PORT}`);
+        });
+    })
+    .catch((err) => {
+        logger.error(err);
+    });
