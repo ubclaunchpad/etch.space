@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 class Board {
     constructor(DB) {
-        this.model = DB.define('board_pixel', {
+        this.model = DB.define('current_board_pixel', {
             x: {
                 type: Sequelize.INTEGER,
                 unique: 'compositeIndex'
