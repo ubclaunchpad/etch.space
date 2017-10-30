@@ -2,9 +2,8 @@ const Sequelize = require('sequelize');
 const config = require('../../config');
 const logger = require('../logger');
 
-const User = require('./user');
-const Chat = require('./chat');
-const Board = require('./board');
+const Chat = require('./models/chat');
+const Board = require('./models/board');
 
 class DB {
     constructor() {

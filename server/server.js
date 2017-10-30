@@ -13,8 +13,6 @@ app.set('views', 'public');
 app.use(cookieParser());
 app.use(express.static('public'));
 
-// connect to DB
-
 const dbConn = new DB();
 
 const session = new Session(server, dbConn);
