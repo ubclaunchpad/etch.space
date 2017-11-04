@@ -11,26 +11,22 @@ A live multi-user collaborative etch-a-sketch built on websockets.
 
 ## Roadmap
 
-### MVP
+Current goal is to demo on bigger websites with more ppl (hackernews, reddit, etc...)
 
-Goal for MVP is to have something we can deploy to a domain and invite people to test. 
-
-Logging will be important as its highly likely something will break. 
-
-We are not going to worry about scaling initially, just the basic mechanic of the site.
+### v2
 
 Reqs:
-- desktop only
-- fixed board size
-- moving/drawing
-- user list
-- chat
-- nickname prompt
-- logging/monitoring (server logs + usage logs (google analytics or something))
-- some way to clear the board w/o restarting server (secret command or something)
+- database so that certain things persist on server restart/crash (users, chat, board)
+- validation of all requests/socket events coming into back end
+- throttling
+- https
+- easier way to know where you are
+- show current (x, y)
+- pixel counts on users
+- cookies (optional)
 
 ### Future
 - voting mechanism (clear the board, shuffle colors, etc... (should use the chat for simplicity))
 - mobile page
 - bigger map ("camera" centered around your pen, camera pans as you move to the edges, option to view whole map)
-- some mechanic by which you can change your color (i.e. if I walk over 10 squares of someone elses color, I become their color)
+- some mechanic by which you can change your color
