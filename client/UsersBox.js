@@ -20,7 +20,7 @@ class UsersBox extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.scrollbar && this.state.scrolledToBottom) {
-            this.scrollbar.scrollToBottom(); 
+            this.scrollbar.scrollToBottom();
         }
     }
 
@@ -87,14 +87,14 @@ class UsersBox extends Component {
                                         color: user.color
                                     }}
                                 >
-                                    {user.nick}
+                                    {user.nick + '     ' + user.pixelCount}
                                 </div>))}
                         </div>
                     </Scrollbars>
                 </div>
                 <div className="chat-box">
                     <Scrollbars
-                        onScrollFrame={this.handleScroll.bind(this)}    
+                        onScrollFrame={this.handleScroll.bind(this)}
                         ref={this.getScrollbarRef.bind(this)}
                         style={{
                             flex: 1
