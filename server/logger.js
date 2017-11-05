@@ -25,14 +25,11 @@ const transports = [
     })
 ];
 
-// only log to console in development
-if (process.env.NODE_ENV === 'development') {
-    transports.push(
-        new winston.transports.Console({
-            format: formats
-        })
-    );
-}
+transports.push(
+    new winston.transports.Console({
+        format: formats
+    })
+);
 
 const logger = winston.createLogger({
     level: 'info',

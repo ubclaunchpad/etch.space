@@ -1,0 +1,22 @@
+version: '3'
+services:
+    db:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_USER: etch
+            POSTGRES_PASSWORD: etch
+            POSTGRES_DB: etch
+        ports:
+            - 5432:5432
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8080:8080
+    node:
+        build: .
+        restart: always
+        ports:
+            - 3001:3001
+

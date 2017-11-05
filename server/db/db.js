@@ -26,6 +26,8 @@ class DB {
     }
 
     connect() {
+        const that = this;
+
         // test connection
         return this.conn.authenticate()
             .then(() => {
@@ -39,6 +41,12 @@ class DB {
             })
             .catch((err) => {
                 logger.error(err);
+                // wait and then retry
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(that.connect());
+                    }, config.DB.CONNECTION_RETRY_RATE);
+                });
             });
     }
 

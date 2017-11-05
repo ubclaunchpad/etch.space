@@ -26,10 +26,11 @@ let config = {
         MESSAGE_MAX_LEN: 200
     },
     DB: {
-        HOSTNAME: 'localhost',
+        HOSTNAME: 'db',
         NAME: 'etch',
         USERNAME: 'etch',
-        PASSWORD: 'etch'
+        PASSWORD: 'etch',
+        CONNECTION_RETRY_RATE: 5000
     }
 }
     ;
