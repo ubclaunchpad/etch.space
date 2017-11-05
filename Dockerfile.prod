@@ -1,0 +1,15 @@
+# choose which image to use
+FROM node:7.7.1
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package.json .
+
+RUN npm install --only=production
+
+# Bundle app source
+COPY . .
+
+CMD [ "node", "server/server.js"]

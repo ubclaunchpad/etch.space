@@ -1,0 +1,7 @@
+# choose which image to use
+FROM node:7.7.1
+
+# Create app directory
+WORKDIR /usr/src/app
+
+CMD [ "node", "node_modules/webpack/bin/webpack.js", "--watch" ]

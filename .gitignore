@@ -10,3 +10,4 @@ server/gif/tmp
 *.rec
 *.svg
 .vscode/tags
+.env

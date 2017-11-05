@@ -22,7 +22,7 @@ class Chat {
     }
 
     sync() {
-        this.model.sync();
+        return this.model.sync();
     }
 
     create(message) {

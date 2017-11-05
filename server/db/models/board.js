@@ -18,7 +18,7 @@ class Board {
     }
 
     sync() {
-        this.model.sync();
+        return this.model.sync();
     }
 
     get() {

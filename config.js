@@ -1,7 +1,4 @@
-const devConfig = require('./dev.config');
-const _ = require('lodash');
-
-let config = {
+const config = {
     SERVER: {
         PORT: 3000
     },
@@ -27,17 +24,11 @@ let config = {
     },
     DB: {
         HOSTNAME: 'db',
-        NAME: 'etch',
-        USERNAME: 'etch',
-        PASSWORD: 'etch',
+        NAME: process.env.POSTGRES_DB,
+        USERNAME: process.env.POSTGRES_USER,
+        PASSWORD: process.env.POSTGRES_PASSWORD,
         CONNECTION_RETRY_RATE: 5000
     }
-}
-    ;
-
-if (process.env.NODE_ENV === 'development') {
-    // devConfig overrides regular config
-    config = _.merge(config, devConfig);
-}
+};
 
 module.exports = config;

@@ -4,9 +4,9 @@ services:
         image: postgres
         restart: always
         environment:
-            POSTGRES_USER: etch
-            POSTGRES_PASSWORD: etch
-            POSTGRES_DB: etch
+            POSTGRES_USER: $POSTGRES_USER
+            POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+            POSTGRES_DB: $POSTGRES_DB
         ports:
             - 5432:5432
     adminer:
@@ -15,8 +15,13 @@ services:
         ports:
             - 8080:8080
     node:
-        build: .
+        depends_on:
+            - db
+        environment:
+            POSTGRES_USER: $POSTGRES_USER
+            POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+            POSTGRES_DB: $POSTGRES_DB
         restart: always
         ports:
-            - 3001:3001
+            - 3000:3000
 
