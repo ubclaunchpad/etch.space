@@ -13,7 +13,6 @@ class Session {
 
         this.users = {};
         this.chat = [];
-
         // chat events, user nickname events
         this.events = [];
 
@@ -129,6 +128,7 @@ class Session {
 
                 user.pos.x = user.nextPos.x;
                 user.pos.y = user.nextPos.y;
+                user.pixelCount += 1;
             }
         });
 
@@ -147,7 +147,7 @@ class Session {
         const startingPos = this.getRandomPos();
         const color = this.getLimitedRandomColor(0.2, 0.8);
         const cursorColor = this.offsetColor(color);
-
+        
         const user = {
             color: this.colorToRGB(color),
             cursorColor: this.colorToRGB(cursorColor),
@@ -157,7 +157,8 @@ class Session {
                 y: startingPos.y
             },
             nick: config.NICKNAME.DEFAULT,
-            connected: true
+            connected: true,
+            pixelCount: 0
         };
 
         this.createUserEvent(id, user);
