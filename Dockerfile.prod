@@ -7,9 +7,13 @@ WORKDIR /usr/src/app
 # Install app dependencies
 COPY package.json .
 
-RUN npm install --only=production
+# Get dependencies
+RUN npm install
 
-# Bundle app source
+# Get source code
 COPY . .
+
+# Build webpack bundle
+RUN node node_modules/webpack/bin/webpack.js
 
 CMD [ "node", "server/server.js"]
