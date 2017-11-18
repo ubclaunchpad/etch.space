@@ -5,6 +5,11 @@ const _ = require('lodash');
 const Recorder = require('./recorder');
 const logger = require('./logger');
 
+const validateSchema = require('./validation').validateSchema;
+
+const EVENT_NAMES = ['move', 'chat', 'nickname', 'disconnect'];
+const EVENT_SCHEMAS = require('./events/schemas');
+
 class Session {
     constructor(server, dbConn) {
         // process.on('uncaughtException', this.handleCrash.bind(this));
@@ -33,15 +38,28 @@ class Session {
     }
 
     bindSocketEvents(socket) {
-        const id = socket.id;
-
-        this.createUser(id);
+        this.createUser(socket.id);
 
         logger.info('User connected');
-        socket.on('move', this.handleMoveEvent.bind(this, id));
-        socket.on('chat', this.handleChatEvent.bind(this, id));
-        socket.on('nickname', this.handleNicknameEvent.bind(this, id));
-        socket.on('disconnect', this.disconnectUser.bind(this, id));
+
+        EVENT_NAMES.forEach((name) => {
+            socket.on(name, this.handleEvent.bind(this, { name, id: socket.id }));
+        }, this);
+    }
+
+    handleEvent(info, event) {
+        const EVENT_HANDLERS = {
+            move: this.handleMoveEvent,
+            chat: this.handleChatEvent,
+            nickname: this.handleNicknameEvent,
+            disconnect: this.handleDisconnectEvent
+        };
+
+        if (!EVENT_SCHEMAS[info.name]) { return; }
+
+        if (validateSchema(EVENT_SCHEMAS[info.name], event)) {
+            EVENT_HANDLERS[info.name].call(this, info.id, event);
+        }
     }
 
     start() {
@@ -71,16 +89,12 @@ class Session {
         }
     }
 
-    handleChatEvent(id, content) {
-        if (content.length > config.CHAT.MESSAGE_MAX_LEN) {
-            return;
-        }
-
+    handleChatEvent(id, event) {
         const stamp = new moment().unix();
 
         const message = {
             userId: id,
-            content,
+            content: event.value,
             stamp,
             nick: this.users[id].nick,
             color: this.users[id].color
@@ -91,7 +105,7 @@ class Session {
                 this.events.push({
                     type: 'chat',
                     userId: id,
-                    content,
+                    content: event.value,
                     stamp,
                     nick: this.users[id].nick,
                     color: this.users[id].color
@@ -99,32 +113,23 @@ class Session {
             });
     }
 
-    handleNicknameEvent(id, nickname) {
-        // if length too high, ignore
-        if (nickname.length > config.NICKNAME.MAX_LEN || nickname.length < config.NICKNAME.MIN_LEN) {
-            return;
-        }
-
+    handleNicknameEvent(id, event) {
         const newUser = _.cloneDeep(this.users[id]);
-        newUser.nick = nickname;
+        newUser.nick = event.value;
 
         this.createUserEvent(id, newUser);
     }
 
-    handleMoveEvent(id, move) {
+    handleMoveEvent(id, event) {
         const user = this.users[id];
 
         if (!user) { return; }
 
-        if (Math.abs(move.x) === 0 || Math.abs(move.x) === 1) {
-            user.nextPos.x = user.pos.x + move.x;
-            user.nextPos.x = Math.max(0, Math.min(user.nextPos.x, config.BOARD.WIDTH - 1));
-        }
+        user.nextPos.x = user.pos.x + event.x;
+        user.nextPos.x = Math.max(0, Math.min(user.nextPos.x, config.BOARD.WIDTH - 1));
 
-        if (Math.abs(move.y) === 0 || Math.abs(move.y) === 1) {
-            user.nextPos.y = user.pos.y + move.y;
-            user.nextPos.y = Math.max(0, Math.min(user.nextPos.y, config.BOARD.HEIGHT - 1));
-        }
+        user.nextPos.y = user.pos.y + event.y;
+        user.nextPos.y = Math.max(0, Math.min(user.nextPos.y, config.BOARD.HEIGHT - 1));
     }
 
     tick() {
@@ -194,7 +199,7 @@ class Session {
         });
     }
 
-    disconnectUser(id) {
+    handleDisconnectEvent(id) {
         if (this.users[id]) {
             const newUser = _.cloneDeep(this.users[id]);
             newUser.connected = false;

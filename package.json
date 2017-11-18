@@ -13,6 +13,7 @@
     "cookie-parser": "^1.4.3",
     "ejs": "^2.5.7",
     "express": "^4.15.4",
+    "is-my-json-valid": "^2.16.1",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "pg": "^6.4.1",

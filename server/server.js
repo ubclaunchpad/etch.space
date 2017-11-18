@@ -19,7 +19,7 @@ const session = new Session(server, dbConn);
 
 app.get('/', (req, res) => {
     if (req.cookies && req.cookies.io) {
-        session.disconnectUser(req.cookies.io);
+        session.handleDisconnectEvent(req.cookies.io);
     }
 
     res.render('index', {});

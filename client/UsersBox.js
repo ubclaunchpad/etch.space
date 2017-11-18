@@ -38,7 +38,9 @@ class UsersBox extends Component {
 
     sendMessage() {
         if (this.textInput.value !== '') {
-            this.props.socket.emit('chat', this.textInput.value);
+            this.props.socket.emit('chat', {
+                value: this.textInput.value
+            });
             this.textInput.value = '';
         }
     }

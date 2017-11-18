@@ -6,7 +6,9 @@ class Popup extends Component {
         if (event.key === 'Enter') {
             const value = this.input.value;
             if (value.length > config.NICKNAME.MIN_LEN) {
-                this.props.socket.emit('nickname', this.input.value);
+                this.props.socket.emit('nickname', {
+                    value: this.input.value
+                });
                 this.props.close();
             }
         }
