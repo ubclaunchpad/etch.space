@@ -79,14 +79,19 @@ class UsersBox extends Component {
                     >
                         <div className="users-list">
                             {users.map((user, i) => (
-                                <div
-                                    key={i}
-                                    style={{
-                                        color: user.color
-                                    }}
-                                >
-                                    {user.nick + '     ' + user.pixelCount}
-                                </div>))}
+                                <div key={i}>
+                                    <span
+                                        style={{
+                                            color: user.color
+                                        }}
+                                    >
+                                        {user.nick}
+                                    </span>
+                                    <span className="user-pixel-count">
+                                        {user.pixelCount}
+                                    </span>
+                                </div>
+                            ))}
                         </div>
                     </Scrollbars>
                 </div>

@@ -140,10 +140,9 @@ class Session {
 
             if ((user.nextPos.x !== user.pos.x) ||
                 (user.nextPos.y !== user.pos.y)) {
-
-                  user.pixelCount++;
-                  this.createUserEvent(id, user);
-                  //console.log(user.pixelCount);
+                user.pixelCount++;
+                this.createUserEvent(id, user);
+                // console.log(user.pixelCount);
 
                 diffs.push({
                     x: user.nextPos.x,

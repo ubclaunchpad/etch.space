@@ -112,6 +112,12 @@ body {
     background: #282828;
 }
 
+.user-pixel-count {
+    margin-left: 5px;
+    color: #757575;
+    font-size: 0.9em;
+}
+
 .housing {
     background-color: #CF4647;
     border-radius: 15px;
