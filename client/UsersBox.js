@@ -85,7 +85,7 @@ class UsersBox extends Component {
                                         color: user.color
                                     }}
                                 >
-                                    {user.nick}
+                                    {user.nick + '     ' + user.pixelCount}
                                 </div>))}
                         </div>
                     </Scrollbars>

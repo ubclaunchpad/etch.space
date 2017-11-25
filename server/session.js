@@ -140,6 +140,11 @@ class Session {
 
             if ((user.nextPos.x !== user.pos.x) ||
                 (user.nextPos.y !== user.pos.y)) {
+
+                  user.pixelCount++;
+                  this.createUserEvent(id, user);
+                  //console.log(user.pixelCount);
+
                 diffs.push({
                     x: user.nextPos.x,
                     y: user.nextPos.y,
@@ -174,6 +179,7 @@ class Session {
             color: this.colorToRGB(color),
             cursorColor: this.colorToRGB(cursorColor),
             pos: startingPos,
+            pixelCount: 0,
             nextPos: {
                 x: startingPos.x,
                 y: startingPos.y
